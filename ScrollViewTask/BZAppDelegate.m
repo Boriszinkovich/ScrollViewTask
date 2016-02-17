@@ -6,23 +6,47 @@
 //  Copyright © 2016 BZ. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "BZAppDelegate.h"
 
-@interface AppDelegate ()
+#import "BZViewController.h"
+
+@interface BZAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation BZAppDelegate
 
+#pragma mark - Class Methods (Public)
+
+#pragma mark - Class Methods (Private)
+
+#pragma mark - Init & Dealloc
+
+#pragma mark - Setters (Public)
+
+#pragma mark - Getters (Public)
+
+#pragma mark - Setters (Private)
+
+#pragma mark - Getters (Private)
+
+#pragma mark - Lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    BZViewController* rootController = [[BZViewController alloc] init];
+    UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:rootController];
+    self.window.rootViewController = navigation;
+    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -41,5 +65,19 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark - Create Views & Variables
+
+#pragma mark - Actions
+
+#pragma mark - Gestures
+
+#pragma mark - Delegates ()
+
+#pragma mark - Methods (Public)
+
+#pragma mark - Methods (Private)
+
+#pragma mark - Standard Methods
 
 @end

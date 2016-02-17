@@ -1,0 +1,79 @@
+{ 
+"Id": 1124, 
+"Name": "At Glance", 
+"Slides": [ 
+{ 
+"Id": 1801, 
+"Name": "At a Glance", 
+"Header": "At a Glance", 
+"Summary": "S",
+"Fact1Image": "1894.png", 
+"Fact1Text": "We have almost 14,000 employees", 
+"Fact2Image": "1896.png", 
+"Fact2Text": "Annual sales in 2014 were more than $4.6 billion.", 
+"Fact3Image": "1893.png", 
+"Fact3Text": "We are a constituent of the UK's FTSE100", 
+"BackgroundImage": "1895.jpg",
+"Column1Header": null,
+"Layout": 16 
+}, 
+{ 
+"Id": 1800, 
+"Name": "Our Vision", 
+"Header": "Our Vision", 
+"Summary": "Smith & Nephew supports healthcare professionals in their daily efforts to improve the lives of their patients. We do this by taking a pioneering approach to the design of our products and services, by striving to secure wide access to our diverse technologies for more customers globally, and by enabling better outcomes for patients and healthcare systems.", 
+"BackgroundImage": "1898.jpg", 
+"Layout": 15 
+}, 
+{ 
+"Id": 1897, 
+"Name": "Our Values Intro", 
+"Header": "Our Values ddfffddf dffdfdfdd ffddffdfd ddffdfd",
+"Summary": "Our values shape everything that we do as a business and form the basis of our relationships with all our stakeholders. Our values also underpin our approach to sustainable development where we continue to set challenging performance targets, particularly with regard to managing our environmental impact and increasingly in the area of social responsibility.\n\nOur values are articulated under the headings of Performance, Innovation and Trust.", 
+"BackgroundImage": "1900.jpg", 
+"Layout": 15 
+}, 
+{ 
+"Id": 1799, 
+"Name": "Our Values", 
+"Header": "Our Values", 
+"Column1Header": "Performance", 
+"Column1Text": "me.",
+"Column2Header": "Innovation", 
+"Column2Text": "means being energetic, creative and passionate about everything we do. We are forward looking; anticipating customers' needs, overcoming barriers and developing opportunities. We encourage and support new ideas, and are always seeking to improve the lives of healthcare professionals and the patients they treat with effective and safe product and service innovations.", 
+"Column3Header": "Trust", 
+"Column3Text": "is something we understand that we have to earn. We earn it by being friendly, approachable and listening to others. We work hard to build lasting and close relationships with our customers, colleagues and the communities in which we operate.\n\nWe are honest and straightforward and do what we say. We have integrity and an ethical approach to business. Our Code of Business Principles defines our relationships with all of our stakeholders, and the behaviours and conduct they should expect from us in our dealings with them.", 
+"BackgroundImage": "1899.jpg", 
+"Layout": 14 
+},
+           {
+           "Id": 1801,
+           "Name": "At a Glance",
+           "Header": "At a Glance",
+           "Summary": "S",
+           "Fact1Image": "1894.png",
+           "Fact1Text": "We have almost 14,000 employees",
+           "Fact2Image": "1896.png",
+           "Fact2Text": "Annual sales in 2014 were more than $4.6 billion.",
+           "Fact3Image": "1893.png",
+           "Fact3Text": "We are a constituent of the UK's FTSE100",
+           "BackgroundImage": "1895.jpg",
+           "Column1Header": null,
+           "Layout": 16 
+           },
+           {
+           "Id": 1799,
+           "Name": "Our Values",
+           "Header": "Our Values",
+           "Column1Header": "Performance ddfffddf dffdfdfdd ffddffdfd ddffdfd ddfffddf dffdfdfdd ffddffdfd ddffdfd",
+           "Column1Text": "means being responsive to the needs of our customers, setting ourselves clear goals and standards and achieving them. We deliver quality and value in our products and services that provide quantifiable social and economic benefits. \n\nOur product, technique and service developments reduce pain, speed recovery. For example, by getting patients back on their feet more quickly following surgery, or by reducing the time it takes to perform procedures, like a hip replacement, more operations can be performed more cost effectively.",
+           "Column2Header": "Innovation",
+           "Column2Text": "means being energetic, creative and passionate about everything we do. We are forward looking; anticipating customers' needs, overcoming barriers and developing opportunities. We encourage and support new ideas, and are always seeking to improve the lives of healthcare professionals and the patients they treat with effective and safe product and service innovations.",
+           "Column3Header": "Trust",
+           "Column3Text": "is something we understand that we have to earn. We earn it by being friendly, approachable and listening to others. We work hard to build lasting and close relationships with our customers, colleagues and the communities in which we operate.\n\nWe are honest and straightforward and do what we say. We have integrity and an ethical approach to business. Our Code of Business Principles defines our relationships with all of our stakeholders, and the behaviours and conduct they should expect from us in our dealings with them.",
+           "BackgroundImage": "1899.jpg", 
+           "Layout": 14 
+           }
+], 
+"Section": "Smith & Nephew" 
+}
