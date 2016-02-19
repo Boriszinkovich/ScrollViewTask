@@ -15,6 +15,7 @@
 #import "UIImage+BZExtensions.h"
 #import "NSArray+BZExtensions.h"
 #import "NSDictionary+BZExtensions.h"
+#import "BZPageView.h"
 
 BOOL isEqual(id _Nullable object1 ,id _Nullable object2);
 

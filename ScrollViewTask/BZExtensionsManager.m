@@ -24,7 +24,7 @@ BOOL isEqual(id _Nullable object1, id _Nullable object2)
 + (void)methodDispatchAfterSeconds:(double)theSeconds
                          withBlock:(void (^ _Nonnull)())theBlock
 {
-    if (![NSThread isMainThread])
+    if (![NSThread isMainThread] || !theBlock || theSeconds < 0)
     {
         abort();
     }
@@ -33,12 +33,20 @@ BOOL isEqual(id _Nullable object1, id _Nullable object2)
 
 + (void)methodAsyncMainWithBlock:(void (^ _Nonnull)())theBlock
 {
+    if (!theBlock)
+    {
+        abort();
+    }
     dispatch_async(dispatch_get_main_queue(), theBlock);
 }
 
 + (void)methodAsyncBackgroundWithBlock:(void (^ _Nonnull)())theBlock
 {
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),theBlock);
+    if (!theBlock)
+    {
+        abort();
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),theBlock);
 }
 
 #pragma mark - Class Methods (Private)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2227E4801C731BB1006D8735 /* UIColor+BZExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2227E47F1C731BB1006D8735 /* UIColor+BZExtensions.m */; };
+		223EC03A1C75D803007C82B8 /* BZPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 223EC0391C75D803007C82B8 /* BZPageView.m */; };
 		2267B59D1C7371C8008823A3 /* UIImage+BZExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2267B59C1C7371C8008823A3 /* UIImage+BZExtensions.m */; };
 		2267B5A01C7373F4008823A3 /* 1898.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2267B59F1C7373F4008823A3 /* 1898.jpg */; };
 		2267B5A21C737405008823A3 /* 1900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2267B5A11C737405008823A3 /* 1900.jpg */; };
@@ -54,6 +55,8 @@
 		2227E47E1C731BB1006D8735 /* UIColor+BZExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BZExtensions.h"; sourceTree = "<group>"; };
 		2227E47F1C731BB1006D8735 /* UIColor+BZExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BZExtensions.m"; sourceTree = "<group>"; };
 		222B85021C749E0C00E4F4C4 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		223EC0381C75D803007C82B8 /* BZPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZPageView.h; sourceTree = "<group>"; };
+		223EC0391C75D803007C82B8 /* BZPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZPageView.m; sourceTree = "<group>"; };
 		2267B59B1C7371C8008823A3 /* UIImage+BZExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BZExtensions.h"; sourceTree = "<group>"; };
 		2267B59C1C7371C8008823A3 /* UIImage+BZExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BZExtensions.m"; sourceTree = "<group>"; };
 		2267B59F1C7373F4008823A3 /* 1898.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1898.jpg; sourceTree = "<group>"; };
@@ -152,6 +155,8 @@
 				2267B5B41C737FAB008823A3 /* NSArray+BZExtensions.m */,
 				2267B5B61C7382AF008823A3 /* NSDictionary+BZExtensions.h */,
 				2267B5B71C7382AF008823A3 /* NSDictionary+BZExtensions.m */,
+				223EC0381C75D803007C82B8 /* BZPageView.h */,
+				223EC0391C75D803007C82B8 /* BZPageView.m */,
 			);
 			name = BZExtensions;
 			sourceTree = "<group>";
@@ -367,6 +372,7 @@
 				2267B59D1C7371C8008823A3 /* UIImage+BZExtensions.m in Sources */,
 				22EC33D61C721CE600B3CAB0 /* BZScrollContentUIView.m in Sources */,
 				22E858671C722C0900CDC24D /* NSObject+BZExtensions.m in Sources */,
+				223EC03A1C75D803007C82B8 /* BZPageView.m in Sources */,
 				2227E4801C731BB1006D8735 /* UIColor+BZExtensions.m in Sources */,
 				22EC33A41C72188900B3CAB0 /* BZAppDelegate.m in Sources */,
 				2267B5B51C737FAB008823A3 /* NSArray+BZExtensions.m in Sources */,
