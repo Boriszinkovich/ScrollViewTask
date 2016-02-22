@@ -11,7 +11,6 @@
 @interface NSDictionary (BZExtensions)
 
 @property (nonatomic, strong, nonnull, readonly) NSDictionary *theDictionaryWithoutNulls;
-//@property (nonatomic, <#strong#>, <#nonnull#>)
 
 @end
 

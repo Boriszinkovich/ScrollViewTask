@@ -23,8 +23,29 @@
     {
         theImageResolutionNumber = @"1";
     }
-    NSString *theFileName = [NSString stringWithFormat:@"%@@%@x.png",theImageName,theImageResolutionNumber];
+    NSString *theFileName = [NSString stringWithFormat:@"%@%@x.png",theImageName,theImageResolutionNumber];
     UIImage* theImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:theFileName ofType:nil]];
+    return theImage;
+}
+
++ (UIImage * _Nonnull)getImageWithImage:(UIImage* _Nonnull)theOriginalImage scaledToSize:(CGSize)theSize
+{
+    if (!theOriginalImage)
+    {
+        abort();
+    }
+    if (CGSizeEqualToSize(theOriginalImage.size, theSize))
+    {
+        return theOriginalImage;
+    }
+    
+    UIGraphicsBeginImageContextWithOptions(theSize, NO, 0.0f);
+    
+    [theOriginalImage drawInRect:CGRectMake(0.0f, 0.0f, theSize.width, theSize.height)];
+    
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
     return theImage;
 }
 

@@ -89,13 +89,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ScrollViewTask/BZPageView.m"
-            timestampString = "477588800.488624"
+            filePath = "ScrollViewTask/BZViewController.m"
+            timestampString = "477831204.664926"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "-panGestureRecognizerWork:"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "-pageControlValueChanged:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScrollViewTask/BZPageView.m"
+            timestampString = "477831418.347883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
+            landmarkName = "-scrollToViewWithIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

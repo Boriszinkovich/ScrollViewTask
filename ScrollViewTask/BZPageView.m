@@ -17,6 +17,7 @@
 @property (nonatomic, assign) BOOL theIsMoving;
 @property (nonatomic, assign) double theStartMovingCenterX;
 @property (nonatomic, assign) double theStartMovingCenterY;
+@property (nonatomic, assign, readwrite) double theCurrentPageIndex;
 
 @end
 
@@ -35,6 +36,7 @@
     {
         [self methodInitBZPageView];
     }
+    
     return self;
 }
 
@@ -50,9 +52,9 @@
     theHolderView.clipsToBounds = YES;
     theHolderView.backgroundColor = [UIColor blueColor];
     
-    _theDuration = 1.4f;
-    _theDamping = 0.2f;
-    _theOptions = UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction;
+    _theAnimationDuration = 1.4f;
+    _theSpringDamping = 0.2f;
+    _theAnimationOptions = UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction;
     
     UIPanGestureRecognizer *thePanGestureRecognizer = [UIPanGestureRecognizer new];
     [thePanGestureRecognizer addTarget:self action:@selector(panGestureRecognizerWork:)];
@@ -99,29 +101,29 @@
     {
         abort();
     }
-    if (theDuration == _theDuration)
+    if (theDuration == _theAnimationDuration)
     {
         return;
     }
-    _theDuration = theDuration;
+    _theAnimationDuration = theDuration;
 }
 
 - (void)setTheDamping:(double)theDamping
 {
-    if (theDamping == _theDamping)
+    if (theDamping == _theSpringDamping)
     {
         return;
     }
-    _theDamping = theDamping;
+    _theSpringDamping = theDamping;
 }
 
 - (void)setTheOptions:(UIViewAnimationOptions)theOptions
 {
-    if (theOptions == _theOptions)
+    if (theOptions == _theAnimationOptions)
     {
         return;
     }
-    _theOptions = theOptions;
+    _theAnimationOptions = theOptions;
 }
 
 #pragma mark - Getters (Public)
@@ -137,6 +139,133 @@
 #pragma mark - Actions
 
 #pragma mark - Gestures
+
+- (void)panGestureRecognizerWork:(UIPanGestureRecognizer *)thePanGestureRecognizer
+{
+    if (self.theViewsArray.count == 0)
+    {
+        return;
+    }
+    CGPoint thePointInView =  [thePanGestureRecognizer translationInView:self];
+    CGPoint theVelocityInView = [thePanGestureRecognizer velocityInView:self];
+    UIGestureRecognizerState theState = thePanGestureRecognizer.state;
+    if (theState == UIGestureRecognizerStateBegan)
+    {
+        self.theIsMoving = YES;
+        self.theStartMovingCenterX = self.theHolderView.theCenterX;
+        self.theStartMovingCenterY = self.theHolderView.theCenterY;
+        return;
+    }
+    if (theState == UIGestureRecognizerStateChanged)
+    {
+        switch (self.theViewPagingOrientation)
+        {
+            case BZPageViewOrientationHorizontal:
+            {
+                self.theHolderView.theCenterX  =  (thePointInView.x + self.theStartMovingCenterX);
+            }
+                break;
+                
+            case BZPageViewOrientationVertical:
+            {
+                self.theHolderView.theCenterY = (thePointInView.y + self.theStartMovingCenterY);
+            }
+                break;
+        }
+        return;
+    }
+    self.theIsMoving = NO;
+    
+    [UIView animateWithDuration:self.theAnimationDuration
+                          delay:0
+         usingSpringWithDamping:self.theSpringDamping
+          initialSpringVelocity:0
+                        options:self.theAnimationOptions
+                     animations:^
+     {
+         switch (self.theViewPagingOrientation)
+         {
+             case BZPageViewOrientationHorizontal:
+             {
+                 self.theHolderView.theCenterX += thePointInView.x * sqrt(fabs(theVelocityInView.x) / 2500);
+             }
+                 break;
+                 
+             case BZPageViewOrientationVertical:
+             {
+                 self.theHolderView.theCenterY += thePointInView.y * sqrt (fabs(theVelocityInView.y) / 2500);
+             }
+                 break;
+         }
+         double theViewCenterX = self.theWidth/2;
+         double theViewCenterY  = self.theHeight/2;
+         CGPoint theHolderViewPoint = [self convertPoint:CGPointMake(theViewCenterX, theViewCenterY)
+                                                  toView:self.theHolderView];
+         UIView *theView = [self.theHolderView hitTest:theHolderViewPoint withEvent:nil];
+         switch (self.theViewPagingOrientation)
+         {
+             case BZPageViewOrientationHorizontal:
+             {
+                 if (!theView)
+                 {
+                     double theScrollInset = self.theHolderView.theCenterX - self.theStartMovingCenterX;
+                     if (theScrollInset < 0)
+                     {
+                         self.theHolderView.theCenterX +=
+                         (theHolderViewPoint.x - self.theViewsArray[self.theViewsArray.count - 1].theCenterX);
+                         theView = self.theViewsArray[self.theViewsArray.count - 1];
+                     }
+                     else
+                     {
+                         self.theHolderView.theCenterX += (theHolderViewPoint.x - self.theViewsArray[0].theCenterX);
+                         theView = self.theViewsArray[0];
+                     }
+                 }
+                 else
+                 {
+                     self.theHolderView.theCenterX += (theHolderViewPoint.x - theView.theCenterX);
+                 }
+                 self.theCurrentPageIndex = [self indexForView:theView];
+                 if (self.delegate)
+                 {
+                     [self.delegate pageViewScrolledToView:theView withIndex:self.theCurrentPageIndex];
+                 }
+             }
+                 break;
+                 
+             case BZPageViewOrientationVertical:
+             {
+                 if (!theView)
+                 {
+                     double theScrollInset = self.theHolderView.theCenterY - self.theStartMovingCenterY;
+                     if (theScrollInset < 0)
+                     {
+                         self.theHolderView.theCenterY +=
+                         (theHolderViewPoint.y - self.theViewsArray[self.theViewsArray.count - 1].theCenterY);
+                         theView = self.theViewsArray[self.theViewsArray.count - 1];
+                     }
+                     else
+                     {
+                         self.theHolderView.theCenterY += (theHolderViewPoint.y - self.theViewsArray[0].theCenterY);
+                         theView = self.theViewsArray[0];
+                     }
+                 }
+                 else
+                 {
+                     self.theHolderView.theCenterY += (theHolderViewPoint.y - theView.theCenterY);
+                 }
+                 self.theCurrentPageIndex = [self indexForView:theView];
+                 if (self.delegate)
+                 {
+                     [self.delegate pageViewScrolledToView:theView withIndex:self.theCurrentPageIndex];
+                 }
+             }
+                 break;
+         }
+     }
+                     completion:nil];
+}
+
 
 #pragma mark - Delegates ()
 
@@ -179,123 +308,58 @@
     }
 }
 
-#pragma mark - Methods (Private)
-
-- (void)panGestureRecognizerWork:(UIPanGestureRecognizer *)thePanGestureRecognizer
+- (void)scrollToViewWithIndex:(NSInteger)theIndex
 {
-    if (self.theViewsArray.count == 0)
+    if (theIndex < 0 || (self.theViewsArray.count - 1 < theIndex))
+    {
+        abort()
+        ;
+    }
+    if (theIndex == self.theCurrentPageIndex)
     {
         return;
     }
-    CGPoint thePointInView =  [thePanGestureRecognizer translationInView:self];
-    CGPoint theVelocityInView = [thePanGestureRecognizer velocityInView:self];
-    NSLog(@"%f %f", thePointInView.x, thePointInView.y);
-    NSLog(@"%f %f", theVelocityInView.x,theVelocityInView.y);
-    UIGestureRecognizerState theState = thePanGestureRecognizer.state;
-    if (theState == UIGestureRecognizerStateBegan)
-    {
-        self.theIsMoving = YES;
-        self.theStartMovingCenterX = self.theHolderView.theCenterX;
-        self.theStartMovingCenterY = self.theHolderView.theCenterY;
-        return;
-    }
-    if (theState == UIGestureRecognizerStateChanged)
-    {
-        switch (self.theViewPagingOrientation)
-        {
-            case BZPageViewOrientationHorizontal:
-            {
-               self.theHolderView.theCenterX  =  (thePointInView.x + self.theStartMovingCenterX);
-            }
-                break;
-                
-            case BZPageViewOrientationVertical:
-            {
-                self.theHolderView.theCenterY = (thePointInView.y + self.theStartMovingCenterY);
-            }
-                break;
-        }
-        return;
-    }
-    self.theIsMoving = NO;
-    
-    [UIView animateWithDuration:self.theDuration
+    self.theCurrentPageIndex  = theIndex;
+    [UIView animateWithDuration:self.theAnimationDuration
                           delay:0
-         usingSpringWithDamping:self.theDamping
+         usingSpringWithDamping:self.theSpringDamping
           initialSpringVelocity:0
-                        options:self.theOptions
+                        options:self.theAnimationOptions
                      animations:^
      {
-         switch (self.theViewPagingOrientation)
-         {
-             case BZPageViewOrientationHorizontal:
-             {
-                 self.theHolderView.theCenterX += thePointInView.x * sqrt(fabs(theVelocityInView.x) / 800);
-             }
-                 break;
-                 
-             case BZPageViewOrientationVertical:
-             {
-                 self.theHolderView.theCenterY += thePointInView.y * sqrt (fabs(theVelocityInView.y) / 800);
-             }
-                 break;
-         }
          double theViewCenterX = self.theWidth/2;
          double theViewCenterY  = self.theHeight/2;
          CGPoint theHolderViewPoint = [self convertPoint:CGPointMake(theViewCenterX, theViewCenterY)
                                                   toView:self.theHolderView];
-         UIView *theView = [self.theHolderView hitTest:theHolderViewPoint withEvent:nil];
+
          switch (self.theViewPagingOrientation)
          {
              case BZPageViewOrientationHorizontal:
              {
-                 if (!theView)
-                 {
-                     double theScrollInset = self.theHolderView.theCenterX - self.theStartMovingCenterX;
-                     if (theScrollInset < 0)
-                     {
-                         self.theHolderView.theCenterX +=
-                         (theHolderViewPoint.x - self.theViewsArray[self.theViewsArray.count - 1].theCenterX);
-                     }
-                     else
-                     {
-                         self.theHolderView.theCenterX += (theHolderViewPoint.x - self.theViewsArray[0].theCenterX);
-                     }
-                     break;
-                 }
-                 self.theHolderView.theCenterX += (theHolderViewPoint.x - theView.theCenterX);
+                 self.theHolderView.theCenterX +=
+                 (theHolderViewPoint.x - self.theViewsArray[theIndex].theCenterX);
              }
                  break;
                  
              case BZPageViewOrientationVertical:
              {
-                 if (!theView)
-                 {
-                     double theScrollInset = self.theHolderView.theCenterY - self.theStartMovingCenterY;
-                     if (theScrollInset < 0)
-                     {
-                         self.theHolderView.theCenterY +=
-                         (theHolderViewPoint.y - self.theViewsArray[self.theViewsArray.count - 1].theCenterY);
-                     }
-                     else
-                     {
-                         self.theHolderView.theCenterY += (theHolderViewPoint.y - self.theViewsArray[0].theCenterY);
-                     }
-                     break;
-                 }
-                 self.theHolderView.theCenterY += (theHolderViewPoint.y - theView.theCenterY);
+                 self.theHolderView.theCenterY +=
+                 (theHolderViewPoint.y - self.theViewsArray[theIndex].theCenterY);
              }
                  break;
          }
+
+         
      }
                      completion:nil];
 }
+
+#pragma mark - Methods (Private)
+
 - (void)resizeHolderView
 {
     if (self.theViewsArray.count == 0)
     {
-//        self.theHolderView.theHeight = 0;
-//        self.theHolderView.theWidth = 0;
           return;
     }
     switch (self.theViewPagingOrientation)
@@ -330,6 +394,27 @@
         }
             break;
     }
+}
+
+- (NSInteger)indexForView:(UIView * _Nonnull)theView
+{
+    if (!theView)
+    {
+        abort();
+    }
+    if (self.theViewsArray.count == 0)
+    {
+        return -1;
+    }
+    for (int i = 0; i < self.theViewsArray.count; i++)
+    {
+        UIView *theCurrentView = self.theViewsArray[i];
+        if (isEqual(theView, theCurrentView))
+        {
+            return i;
+        }
+    }
+    return -1;
 }
 
 #pragma mark - Standard Methods

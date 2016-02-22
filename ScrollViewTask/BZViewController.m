@@ -11,9 +11,11 @@
 #import "BZScrollContentUIView.h"
 #import "BZExtensionsManager.h"
 
-@interface BZViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface BZViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, BZPageViewDelegate>
 
 @property (nonatomic, strong, nonnull) UIView *theContainerView;
+@property (nonatomic, strong, nonnull) BZPageView *thePageView;
+@property (nonatomic, strong, nonnull) SMPageControl *thePageControl;
 
 @end
 
@@ -110,98 +112,124 @@
     theJsonDictionary = [theJsonDictionary theDictionaryWithoutNulls];
     NSArray* theLayoutsDictsArray = [theJsonDictionary objectForKey:@"Slides"];
     
-//    BZScrollContentUIView *theBZScrollContentUIView = [BZScrollContentUIView new];
-//    [self.view addSubview:theBZScrollContentUIView];
-//    for (int i = 0; i < 5; i++)
-//    {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(i*10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-//        {
-//            theBZScrollContentUIView.theLayoutDictionary = theLayoutsDictsArray[i];
-//        });
-//    }
-//    
-//    UIView *theContainerView = [UIView new];
-//    self.theContainerView= theContainerView;
-//    [theScrollView addSubview:theContainerView];
-//    theScrollView.pagingEnabled = YES;
-//    theContainerView.theHeight = theContainerView.superview.theHeight;
-//    theContainerView.theWidth = theContainerView.superview.theWidth;
-//    
-//    for (int i = 0; i < theLayoutsDictsArray.count; i++)
-//    {
-//        BZScrollContentUIView *theBZScrollContentUIView = [BZScrollContentUIView new];
-//        [theContainerView addSubview:theBZScrollContentUIView];
-//        theBZScrollContentUIView.theLayoutDictionary = theLayoutsDictsArray[i];
-//        theBZScrollContentUIView.theMinY = theBZScrollContentUIView.theHeight * i;
-//        
-//    }
     BZPageView *thePageView = [BZPageView new];
+    self.thePageView = thePageView;
     [self.view addSubview:thePageView];
-    thePageView.theWidth = 300;
-    thePageView.theHeight = 300;
-    thePageView.theMinX = 200;
-    thePageView.theMinY = 50;
-    thePageView.theViewPagingOrientation = BZPageViewOrientationVertical;
-    thePageView.backgroundColor = [UIColor grayColor];
-    
-    
-    for (int i = 0; i < 30; i++)
+    thePageView.theWidth = thePageView.superview.theWidth;
+    thePageView.theHeight = thePageView.superview.theHeight;
+    thePageView.theSpringDamping = 0.9;
+    for (int i = 0; i < theLayoutsDictsArray.count; i++)
     {
-        UIView *theView = [UIView new];
-        theView.theHeight = 100 + i* 2;
-        theView.theWidth = 100 + i * 2;
-//        theView.theHeight = 100;
-//        theView.theWidth = 100;
+        BZScrollContentUIView *theBZScrollContentUIView = [BZScrollContentUIView new];
+        theBZScrollContentUIView.theLayoutDictionary = theLayoutsDictsArray[i];
+        [thePageView addPage:theBZScrollContentUIView];
         
-        theView.backgroundColor = [UIColor redColor];
-        {
-            UIView *theSeparatorView = [UIView new];
-            [theView addSubview:theSeparatorView];
-            switch (thePageView.theViewPagingOrientation)
-            {
-                case BZPageViewOrientationHorizontal:
-                    theSeparatorView.theWidth = 10;
-                    theSeparatorView.theHeight = theView.theHeight;
-                    theSeparatorView.theMinX = theView.theMaxX - theSeparatorView.theWidth;
-                    theSeparatorView.theMinY = theView.theMinY;
-                    break;
-                    
-                case BZPageViewOrientationVertical:
-                    theSeparatorView.theWidth = theView.theWidth;
-                    theSeparatorView.theHeight = 10;
-                    theSeparatorView.theMinX = theView.theMinX;
-                    theSeparatorView.theMinY = theView.theMaxY - theSeparatorView.theHeight;
-                    break;
-            }
-            theSeparatorView.backgroundColor = [UIColor greenColor];
-        }
-        
-        UILabel *theLabel = [UILabel new];
-        [theView addSubview:theLabel];
-        theLabel.theMinX = 40;
-        theLabel.theMinY = 40;
-        theLabel.text = [NSString stringWithFormat:@"%ld", (long) i];
-        [theLabel sizeToFit];
-        theLabel.theCenterX = theLabel.superview.theWidth/2;
-        theLabel.theCenterY = theLabel.superview.theHeight/2;
-        
-        
-        [thePageView addPage:theView];
     }
+    thePageView.delegate = self;
+    
+    SMPageControl *theSMPageControl = [SMPageControl new];
+    self.thePageControl = theSMPageControl;
+    [self.view addSubview:theSMPageControl];
+    theSMPageControl.theWidth = theSMPageControl.superview.theWidth;
+    [theSMPageControl setMinHeight: 38];
+    theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
+//    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
+    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
+    theSMPageControl.numberOfPages = theLayoutsDictsArray.count;
+    
+    {
+        UIImage *thePageOnImage = [UIImage getImageNamed:@"product_page_on_"];
+        UIImage *thePageOffImage = [UIImage getImageNamed:@"product_page_off_"];
+        CGSize theImageSize;
+        theImageSize.width = 30;
+        theImageSize.height = 30;
+        thePageOnImage = [UIImage getImageWithImage:thePageOnImage scaledToSize:theImageSize];
+        thePageOffImage = [UIImage getImageWithImage:thePageOffImage scaledToSize:theImageSize];
+        theSMPageControl.pageIndicatorImage = thePageOnImage;
+        theSMPageControl.currentPageIndicatorImage = thePageOffImage;
+
+    }
+    
+    CGAffineTransform transform = CGAffineTransformRotate(theSMPageControl.transform, M_PI/2);
+    theSMPageControl.transform = transform;
+    [theSMPageControl sizeToFit];
+    
+    theSMPageControl.currentPage = 0;
+    theSMPageControl.tapBehavior = SMPageControlTapBehaviorJump;
+    [theSMPageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+  //  [theSMPageControl setFrame:CGRectMake(100, 100, 400, 400)];
+//    BZPageView *thePageView = [BZPageView new];
+//    [self.view addSubview:thePageView];
+//    thePageView.theWidth = 300;
+//    thePageView.theHeight = 300;
+//    thePageView.theMinX = 200;
+//    thePageView.theMinY = 50;
+//    thePageView.theViewPagingOrientation = BZPageViewOrientationVertical;
+//    thePageView.backgroundColor = [UIColor grayColor];
+//    
+//    
+//    for (int i = 0; i < 30; i++)
+//    {
+//        UIView *theView = [UIView new];
+//        theView.theHeight = 100 + i* 2;
+//        theView.theWidth = 100 + i * 2;
+//        theView.backgroundColor = [UIColor redColor];
+//        {
+//            UIView *theSeparatorView = [UIView new];
+//            [theView addSubview:theSeparatorView];
+//            switch (thePageView.theViewPagingOrientation)
+//            {
+//                case BZPageViewOrientationHorizontal:
+//                    theSeparatorView.theWidth = 10;
+//                    theSeparatorView.theHeight = theView.theHeight;
+//                    theSeparatorView.theMinX = theView.theMaxX - theSeparatorView.theWidth;
+//                    theSeparatorView.theMinY = theView.theMinY;
+//                    break;
+//                    
+//                case BZPageViewOrientationVertical:
+//                    theSeparatorView.theWidth = theView.theWidth;
+//                    theSeparatorView.theHeight = 10;
+//                    theSeparatorView.theMinX = theView.theMinX;
+//                    theSeparatorView.theMinY = theView.theMaxY - theSeparatorView.theHeight;
+//                    break;
+//            }
+//            theSeparatorView.backgroundColor = [UIColor greenColor];
+//        }
+//        
+//        UILabel *theLabel = [UILabel new];
+//        [theView addSubview:theLabel];
+//        theLabel.theMinX = 40;
+//        theLabel.theMinY = 40;
+//        theLabel.text = [NSString stringWithFormat:@"%ld", (long) i];
+//        [theLabel sizeToFit];
+//        theLabel.theCenterX = theLabel.superview.theWidth/2;
+//        theLabel.theCenterY = theLabel.superview.theHeight/2;
+//        
+//        
+//        [thePageView addPage:theView];
+//    }
 //    [BZExtensionsManager methodDispatchAfterSeconds:6
 //                                          withBlock:^
 //     {
 //         thePageView.theViewPagingOrientation = BZPageViewOrientationVertical;
-////         thePageView.theDamping = 0.7;
-////         thePageView.theDuration = 5;
+//         thePageView.theDamping = 0.7;
+//         thePageView.theDuration = 5;
 //     }];
-
-    
+//
+//    
 }
 
 #pragma mark - Actions
 
 #pragma mark - Gestures
+
+#pragma mark - Delegates ()
+
+- (void)pageViewScrolledToView:(UIView * _Nonnull)theView withIndex:(NSInteger)theIndex;
+{
+    NSLog(@"Scrolled to %ld", theIndex);
+    self.thePageControl.currentPage = theIndex;
+}
 
 #pragma mark - Methods (Public)
 
@@ -210,6 +238,16 @@
 -(void) testPerformSelector:(NSNumber *)number
 {
     NSLog(@"ты вовремя получил этот nslog? %zd", [number integerValue]);
+}
+
+- (void)pageControlValueChanged:(SMPageControl *)sender
+{
+    NSLog(@"%ld", sender.currentPage);
+    if (sender.currentPage == self.thePageView.theCurrentPageIndex)
+    {
+        return;
+    }
+    [self.thePageView scrollToViewWithIndex:sender.currentPage];
 }
 
 #pragma mark - Standard Methods
