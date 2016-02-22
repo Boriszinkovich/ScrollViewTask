@@ -51,7 +51,6 @@ NSString* const theHeaderColor = @"ff7303";
     {
         abort();
     }
-  //  NSLog(@"%@", theLayoutDictionary);
     if (isEqual(theLayoutDictionary, _theLayoutDictionary))
     {
         return;

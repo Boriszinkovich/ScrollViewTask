@@ -36,7 +36,6 @@
     {
         [self methodInitBZPageView];
     }
-    
     return self;
 }
 
@@ -301,8 +300,10 @@
             }
                 break;
             case BZPageViewOrientationVertical:
+            {
                 thePage.theCenterX =  theLastAddedView.theCenterX;
                 thePage.theCenterY = theLastAddedView.theCenterY + theLastAddedView.theHeight/2 + thePage.theHeight/2;
+            }
                 break;
         }
     }
@@ -312,14 +313,13 @@
 {
     if (theIndex < 0 || (self.theViewsArray.count - 1 < theIndex))
     {
-        abort()
-        ;
+        abort();
     }
     if (theIndex == self.theCurrentPageIndex)
     {
         return;
     }
-    self.theCurrentPageIndex  = theIndex;
+    self.theCurrentPageIndex = theIndex;
     [UIView animateWithDuration:self.theAnimationDuration
                           delay:0
          usingSpringWithDamping:self.theSpringDamping
@@ -348,8 +348,6 @@
              }
                  break;
          }
-
-         
      }
                      completion:nil];
 }

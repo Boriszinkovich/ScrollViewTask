@@ -50,13 +50,13 @@
         id theDictionaryValue = theMutableDictionary[theDictionaryKey];
         if ([theDictionaryValue isKindOfClass:[NSArray class]])
         {
-            NSArray* theCurrentArray = [theDictionaryValue theArrayWithoutNulls];
+            NSArray *theCurrentArray = [theDictionaryValue theArrayWithoutNulls];
             theMutableDictionary[theDictionaryKey] = theCurrentArray;
             continue;
         }
         if ([theDictionaryValue isKindOfClass:[NSDictionary class]])
         {
-            NSDictionary* theCurrentDictionary = [theDictionaryValue theDictionaryWithoutNulls];
+            NSDictionary *theCurrentDictionary = [theDictionaryValue theDictionaryWithoutNulls];
             theMutableDictionary[theDictionaryKey] = theCurrentDictionary;
             continue;
         }

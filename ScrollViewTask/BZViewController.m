@@ -47,21 +47,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //    for (int i = 0; i < 50; i++)
-    //    {
-    ////        [BZExtensionsManager methodDispatchAfterSeconds:i
-    ////                                   withBlock:^
-    ////         {
-    ////             NSLog(@"ты вовремя получил этот nslog? %zd",i);
-    ////         }];
-    //        [BZExtensionsManager methodAsyncBackgroundWithBlock:^{
-    //            [BZExtensionsManager methodDispatchAfterSeconds:i
-    //                                                  withBlock:^
-    //             {
-    //                 NSLog(@"ты вовремя получил этот nslog? %zd",i);
-    //             }];
-    //        }];
-    //    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -105,12 +90,15 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     NSString *theFilePath = [[NSBundle mainBundle] pathForResource:@"bz_layout_data" ofType:@"json"];
     
-    NSString *theJSONString = [[NSString alloc] initWithContentsOfFile:theFilePath encoding:NSUTF8StringEncoding error:NULL];
-    NSData* theJSONData = [theJSONString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *theJSONString = [[NSString alloc] initWithContentsOfFile:theFilePath
+                                                              encoding:NSUTF8StringEncoding error:NULL];
+    NSData *theJSONData = [theJSONString dataUsingEncoding:NSUTF8StringEncoding];
     NSError *theJsonError;
-    NSDictionary *theJsonDictionary = [NSJSONSerialization JSONObjectWithData:theJSONData options:NSJSONReadingMutableContainers error:&theJsonError];
+    NSDictionary *theJsonDictionary = [NSJSONSerialization JSONObjectWithData:theJSONData
+                                                                      options:NSJSONReadingMutableContainers
+                                                                        error:&theJsonError];
     theJsonDictionary = [theJsonDictionary theDictionaryWithoutNulls];
-    NSArray* theLayoutsDictsArray = [theJsonDictionary objectForKey:@"Slides"];
+    NSArray *theLayoutsDictsArray = [theJsonDictionary objectForKey:@"Slides"];
     
     BZPageView *thePageView = [BZPageView new];
     self.thePageView = thePageView;
@@ -125,7 +113,6 @@
         [thePageView addPage:theBZScrollContentUIView];
         
     }
-//    thePageView.theViewPagingOrientation = BZPageViewOrientationHorizontal;
     thePageView.delegate = self;
     
     SMPageControl *theSMPageControl = [SMPageControl new];
@@ -134,85 +121,22 @@
     theSMPageControl.theWidth = theSMPageControl.superview.theWidth;
     theSMPageControl.theHeight = 40;
     theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
-//    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
     theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight;
     theSMPageControl.numberOfPages = theLayoutsDictsArray.count;
-    theSMPageControl.backgroundColor = [UIColor redColor];
     theSMPageControl.pageIndicatorImage = [UIImage getImageNamed:@"product_page_off"];
     theSMPageControl.currentPageIndicatorImage = [UIImage getImageNamed:@"product_page_on"];
     [theSMPageControl sizeToFit];
-    theSMPageControl.theWidth = theSMPageControl.superview.theWidth;
-//    theSMPageControl.theHeight = 40;
+    theSMPageControl.theWidth = theSMPageControl.superview.theHeight;
     theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
-    //    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
-    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight;
+    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight/2;
     
     CGAffineTransform transform = CGAffineTransformRotate(theSMPageControl.transform, M_PI/2);
     theSMPageControl.transform = transform;
     
     theSMPageControl.currentPage = 0;
     theSMPageControl.tapBehavior = SMPageControlTapBehaviorStep;
-    [theSMPageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-  //  [theSMPageControl setFrame:CGRectMake(100, 100, 400, 400)];
-//    BZPageView *thePageView = [BZPageView new];
-//    [self.view addSubview:thePageView];
-//    thePageView.theWidth = 300;
-//    thePageView.theHeight = 300;
-//    thePageView.theMinX = 200;
-//    thePageView.theMinY = 50;
-//    thePageView.theViewPagingOrientation = BZPageViewOrientationVertical;
-//    thePageView.backgroundColor = [UIColor grayColor];
-//    
-//    
-//    for (int i = 0; i < 30; i++)
-//    {
-//        UIView *theView = [UIView new];
-//        theView.theHeight = 100 + i* 2;
-//        theView.theWidth = 100 + i * 2;
-//        theView.backgroundColor = [UIColor redColor];
-//        {
-//            UIView *theSeparatorView = [UIView new];
-//            [theView addSubview:theSeparatorView];
-//            switch (thePageView.theViewPagingOrientation)
-//            {
-//                case BZPageViewOrientationHorizontal:
-//                    theSeparatorView.theWidth = 10;
-//                    theSeparatorView.theHeight = theView.theHeight;
-//                    theSeparatorView.theMinX = theView.theMaxX - theSeparatorView.theWidth;
-//                    theSeparatorView.theMinY = theView.theMinY;
-//                    break;
-//                    
-//                case BZPageViewOrientationVertical:
-//                    theSeparatorView.theWidth = theView.theWidth;
-//                    theSeparatorView.theHeight = 10;
-//                    theSeparatorView.theMinX = theView.theMinX;
-//                    theSeparatorView.theMinY = theView.theMaxY - theSeparatorView.theHeight;
-//                    break;
-//            }
-//            theSeparatorView.backgroundColor = [UIColor greenColor];
-//        }
-//        
-//        UILabel *theLabel = [UILabel new];
-//        [theView addSubview:theLabel];
-//        theLabel.theMinX = 40;
-//        theLabel.theMinY = 40;
-//        theLabel.text = [NSString stringWithFormat:@"%ld", (long) i];
-//        [theLabel sizeToFit];
-//        theLabel.theCenterX = theLabel.superview.theWidth/2;
-//        theLabel.theCenterY = theLabel.superview.theHeight/2;
-//        
-//        
-//        [thePageView addPage:theView];
-//    }
-//    [BZExtensionsManager methodDispatchAfterSeconds:6
-//                                          withBlock:^
-//     {
-//         thePageView.theViewPagingOrientation = BZPageViewOrientationVertical;
-//         thePageView.theDamping = 0.7;
-//         thePageView.theDuration = 5;
-//     }];
-//
-//    
+    [theSMPageControl addTarget:self action:@selector(pageControlValueChanged:)
+               forControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - Actions
@@ -223,7 +147,6 @@
 
 - (void)pageViewScrolledToView:(UIView * _Nonnull)theView withIndex:(NSInteger)theIndex;
 {
-    NSLog(@"Scrolled to %ld", theIndex);
     self.thePageControl.currentPage = theIndex;
 }
 
@@ -231,14 +154,13 @@
 
 #pragma mark - Methods (Private)
 
--(void) testPerformSelector:(NSNumber *)number
+- (void) testPerformSelector:(NSNumber *)number
 {
     NSLog(@"ты вовремя получил этот nslog? %zd", [number integerValue]);
 }
 
 - (void)pageControlValueChanged:(SMPageControl *)sender
 {
-    NSLog(@"%ld", sender.currentPage);
     if (sender.currentPage == self.thePageView.theCurrentPageIndex)
     {
         return;

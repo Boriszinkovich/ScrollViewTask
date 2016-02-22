@@ -23,7 +23,6 @@
 - (void)setTheMinX:(double)theMinX
 {
     CGRect theFrameRect = self.frame;
-    NSLog(@"%f",self.frame.size.width);
     theFrameRect.origin.x = theMinX;
     self.frame = theFrameRect;
 }

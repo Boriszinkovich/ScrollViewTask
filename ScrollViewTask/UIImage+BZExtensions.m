@@ -29,7 +29,7 @@
     return theImage;
 }
 
-+ (UIImage * _Nonnull)getImageWithImage:(UIImage* _Nonnull)theOriginalImage scaledToSize:(CGSize)theSize
++ (UIImage * _Nonnull)getImageWithImage:(UIImage * _Nonnull)theOriginalImage scaledToSize:(CGSize)theSize
 {
     if (!theOriginalImage)
     {
