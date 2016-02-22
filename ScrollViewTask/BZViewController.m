@@ -125,37 +125,33 @@
         [thePageView addPage:theBZScrollContentUIView];
         
     }
+//    thePageView.theViewPagingOrientation = BZPageViewOrientationHorizontal;
     thePageView.delegate = self;
     
     SMPageControl *theSMPageControl = [SMPageControl new];
     self.thePageControl = theSMPageControl;
     [self.view addSubview:theSMPageControl];
     theSMPageControl.theWidth = theSMPageControl.superview.theWidth;
-    [theSMPageControl setMinHeight: 38];
+    theSMPageControl.theHeight = 40;
     theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
 //    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
-    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
+    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight;
     theSMPageControl.numberOfPages = theLayoutsDictsArray.count;
-    
-    {
-        UIImage *thePageOnImage = [UIImage getImageNamed:@"product_page_on_"];
-        UIImage *thePageOffImage = [UIImage getImageNamed:@"product_page_off_"];
-        CGSize theImageSize;
-        theImageSize.width = 30;
-        theImageSize.height = 30;
-        thePageOnImage = [UIImage getImageWithImage:thePageOnImage scaledToSize:theImageSize];
-        thePageOffImage = [UIImage getImageWithImage:thePageOffImage scaledToSize:theImageSize];
-        theSMPageControl.pageIndicatorImage = thePageOnImage;
-        theSMPageControl.currentPageIndicatorImage = thePageOffImage;
-
-    }
+    theSMPageControl.backgroundColor = [UIColor redColor];
+    theSMPageControl.pageIndicatorImage = [UIImage getImageNamed:@"product_page_off"];
+    theSMPageControl.currentPageIndicatorImage = [UIImage getImageNamed:@"product_page_on"];
+    [theSMPageControl sizeToFit];
+    theSMPageControl.theWidth = theSMPageControl.superview.theWidth;
+//    theSMPageControl.theHeight = 40;
+    theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
+    //    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.minHeight;
+    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight;
     
     CGAffineTransform transform = CGAffineTransformRotate(theSMPageControl.transform, M_PI/2);
     theSMPageControl.transform = transform;
-    [theSMPageControl sizeToFit];
     
     theSMPageControl.currentPage = 0;
-    theSMPageControl.tapBehavior = SMPageControlTapBehaviorJump;
+    theSMPageControl.tapBehavior = SMPageControlTapBehaviorStep;
     [theSMPageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
   //  [theSMPageControl setFrame:CGRectMake(100, 100, 400, 400)];
 //    BZPageView *thePageView = [BZPageView new];

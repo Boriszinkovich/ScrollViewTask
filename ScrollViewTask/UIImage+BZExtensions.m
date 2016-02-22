@@ -23,8 +23,9 @@
     {
         theImageResolutionNumber = @"1";
     }
-    NSString *theFileName = [NSString stringWithFormat:@"%@%@x.png",theImageName,theImageResolutionNumber];
-    UIImage* theImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:theFileName ofType:nil]];
+    NSString *theFileName = [NSString stringWithFormat:@"%@@%@x.png",theImageName,theImageResolutionNumber];
+    NSLog(@"%@", theFileName);
+    UIImage *theImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:theFileName ofType:nil]];
     return theImage;
 }
 
