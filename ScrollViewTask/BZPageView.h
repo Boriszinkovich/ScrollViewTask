@@ -16,9 +16,10 @@ typedef enum : NSUInteger
 } BZPageViewOrientation;
 
 @protocol BZPageViewDelegate;
+
 @interface BZPageView : UIView
 
-@property(nonatomic, weak, nullable) id<BZPageViewDelegate> theDelegate;
+@property (nonatomic, weak, nullable) id<BZPageViewDelegate> theDelegate;
 @property (nonatomic, assign) BZPageViewOrientation theViewPagingOrientation;
 /// default is 1.4
 @property (nonatomic, assign) double theAnimationDuration;
@@ -27,6 +28,7 @@ typedef enum : NSUInteger
 /// default UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction
 @property (nonatomic, assign) UIViewAnimationOptions theAnimationOptions;
 @property (nonatomic, assign, readonly) double theCurrentPageIndex;
+
 /// add only afterSetting theWidth and theHeight
 - (void)methodAddPage:(UIView * _Nonnull)thePage;
 - (void)methodScrollToViewWithIndex:(NSInteger)theIndex;

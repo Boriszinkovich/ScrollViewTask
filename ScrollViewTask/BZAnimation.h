@@ -24,11 +24,10 @@
 @property (nonatomic, assign) UIViewAnimationOptions theOptions;
 
 - (void)methodSetAnimationBlock:(void (^ _Nonnull)())theAnimationBlock;
-- (void)methodSetCompletionBlock:(void (^ _Nonnull)(BOOL theIsAnimationComplited))theCompletionBlock;
+- (void)methodSetCompletionBlock:(void (^ _Nullable)(BOOL finished))theCompletionBlock;
 - (void)methodStart;
 
 @end
-
 
 
 

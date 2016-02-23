@@ -12,8 +12,8 @@
 
 @interface BZAnimation ()
 
-@property (nonatomic, copy) void (^ theMainAnimationBlock)(void);
-@property (nonatomic, copy) void (^ theMainCompletionBlock)(BOOL isAnimationComplited);
+@property (nonatomic, copy) void (^ theMainAnimationBlock)();
+@property (nonatomic, copy) void (^ theMainCompletionBlock)(BOOL finished);
 
 @end
 
@@ -96,6 +96,10 @@
 
 - (void)setTheSpringWithDamping:(double)theSpringWithDamping
 {
+    if (theSpringWithDamping < 0 || theSpringWithDamping > 1)
+    {
+        abort();
+    }
     if (theSpringWithDamping == _theSpringWithDamping)
     {
         return;
@@ -139,17 +143,17 @@
     self.theMainAnimationBlock = theAnimationBlock;
 }
 
-- (void)methodSetCompletionBlock:(void (^ _Nonnull)(BOOL isAnimationComplited))theCompletionBlock;
+- (void)methodSetCompletionBlock:(void (^ _Nullable)(BOOL finished))theCompletionBlock;
 {
-    if (!theCompletionBlock)
-    {
-        abort();
-    }
     self.theMainCompletionBlock = theCompletionBlock;
 }
 
 - (void)methodStart
 {
+    if (!self.theMainAnimationBlock)
+    {
+        abort();
+    }
     if (self.theView)
     {
         [UIView transitionWithView:self.theView
@@ -157,15 +161,10 @@
                            options:self.theOptions
                         animations:^
          {
-             if (!self.theMainAnimationBlock)
-             {
-                 abort();
-             }
              self.theMainAnimationBlock();
          }
                         completion:^(BOOL finished)
          {
-             NSLog(@"%d",finished);
              if (self.theMainCompletionBlock)
              {
                  self.theMainCompletionBlock(finished);
@@ -173,24 +172,29 @@
          }];
         return;
     }
-    [UIView animateWithDuration:self.theDuration
-                          delay:self.theDelay
-         usingSpringWithDamping:self.theSpringWithDamping
-          initialSpringVelocity:self.theInitialSpringVelocity options:self.theOptions
+    [UIView animateWithDuration:0
                      animations:^
-     {
-         if (!self.theMainAnimationBlock)
-         {
-             abort();
-         }
-         self.theMainAnimationBlock();
+     {//for the case when options = UIViewAnimationOptionBeginFromCurrentState
+         
      }
                      completion:^(BOOL finished)
      {
-         if (self.theMainCompletionBlock)
-         {
-             self.theMainCompletionBlock(finished);
-         }
+         [UIView animateWithDuration:self.theDuration
+                               delay:self.theDelay
+              usingSpringWithDamping:self.theSpringWithDamping
+               initialSpringVelocity:self.theInitialSpringVelocity options:self.theOptions
+                          animations:^
+          {
+              self.theMainAnimationBlock();
+          }
+                          completion:^(BOOL finished)
+          {
+              if (self.theMainCompletionBlock)
+              {
+                  self.theMainCompletionBlock(finished);
+              }
+              
+          }];
 
      }];
 }
@@ -200,7 +204,6 @@
 #pragma mark - Standard Methods
 
 @end
-
 
 
 

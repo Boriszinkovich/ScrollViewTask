@@ -57,60 +57,91 @@
         [self createAllViews];
     }
 }
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (self.isFirstLoad)
-    {
-        self.isFirstLoad = NO;
-    }
-    BZAnimation *theBZAnimation = [BZAnimation new];
-    theBZAnimation.theDuration = 0.6;
-    UILabel *theExampleLabel = [UILabel new];
-    theExampleLabel.theWidth = 100;
-    theExampleLabel.theHeight = 100;
-    theExampleLabel.theMinX = 100;
-    theExampleLabel.theMinY = 100;
-    theExampleLabel.backgroundColor = [UIColor blueColor];
     
-    UIView *theContainerView = [UIView new];
-    theContainerView.theMinY = 100;
-    theContainerView.theMinX = 100;
-    theContainerView.theWidth = 700;
-    theContainerView.theHeight = 700;
-    theContainerView.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:theContainerView];
-    [theContainerView addSubview:theExampleLabel];
-    theBZAnimation.theOptions = UIViewAnimationOptionTransitionFlipFromLeft;
-    theBZAnimation.theView = self.view;
-    UIView *theSecondView = [UIView new];
-    theSecondView.theMinX = 400;
-    theSecondView.theMinY = 400;
-    theSecondView.theHeight = 300;
-    theSecondView.theWidth = 300;
-    theSecondView.backgroundColor = [UIColor greenColor];
-    [theBZAnimation methodSetAnimationBlock:^{
-        [theExampleLabel removeFromSuperview];
-        [theContainerView addSubview:theSecondView];
-    }];
-    [theBZAnimation methodSetCompletionBlock:^(BOOL theIsAnimationComplited) {
-        NSLog(@"completed");
-    }];
-
-//    [self.view addSubview:theExampleLabel];
-//    theBZAnimation.theOptions = UIViewAnimationCurveLinear;
-//        [theBZAnimation methodSetAnimationBlock:^{
-//            theExampleLabel.theMinY = 300;
-//            theExampleLabel.theMinX = 300;
-//        }];
-//        [theBZAnimation methodSetCompletionBlock:^(BOOL theIsAnimationComplited) {
-//            NSLog(@"completed");
-//        }];
-    
-    [theBZAnimation methodStart];
-
+    UIButton *theButton = [UIButton new];
+    [self.view addSubview:theButton];
+    theButton.frame = self.view.frame;
+    theButton.backgroundColor = [UIColor redColor];
+    theButton.alpha = 0.05;
+    [theButton addTarget:self action:@selector(actionPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
+
+- (void)actionPressed:(UIButton *)theButton
+{
+    theButton.alpha = 0.6;
+    BZAnimation *theFinishedBZAnimation = [BZAnimation new];
+    theFinishedBZAnimation.theOptions = UIViewAnimationOptionBeginFromCurrentState;
+    theFinishedBZAnimation.theDuration = 8;
+    theFinishedBZAnimation.theSpringWithDamping = 1;
+    [theFinishedBZAnimation methodSetAnimationBlock:^
+     {
+         theButton.alpha = 1;
+     }];
+    [theFinishedBZAnimation methodSetCompletionBlock:^(BOOL finished)
+     {
+         NSLog(@"%d",finished);
+     }];
+    [theFinishedBZAnimation methodStart];
+}
+
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    if (self.isFirstLoad)
+//    {
+//        self.isFirstLoad = NO;
+//    }
+//    BZAnimation *theBZAnimation = [BZAnimation new];
+//    theBZAnimation.theDuration = 0.6;
+//    UILabel *theExampleLabel = [UILabel new];
+//    theExampleLabel.theWidth = 100;
+//    theExampleLabel.theHeight = 100;
+//    theExampleLabel.theMinX = 100;
+//    theExampleLabel.theMinY = 100;
+//    theExampleLabel.backgroundColor = [UIColor blueColor];
+//    
+//    UIView *theContainerView = [UIView new];
+//    theContainerView.theMinY = 100;
+//    theContainerView.theMinX = 100;
+//    theContainerView.theWidth = 700;
+//    theContainerView.theHeight = 700;
+//    theContainerView.backgroundColor = [UIColor yellowColor];
+//    [self.view addSubview:theContainerView];
+//    [theContainerView addSubview:theExampleLabel];
+//    theBZAnimation.theOptions = UIViewAnimationOptionTransitionFlipFromLeft;
+//    theBZAnimation.theView = self.view;
+//    UIView *theSecondView = [UIView new];
+//    theSecondView.theMinX = 400;
+//    theSecondView.theMinY = 400;
+//    theSecondView.theHeight = 300;
+//    theSecondView.theWidth = 300;
+//    theSecondView.backgroundColor = [UIColor greenColor];
+//    [theBZAnimation methodSetAnimationBlock:^
+//    {
+//        [theExampleLabel removeFromSuperview];
+//        [theContainerView addSubview:theSecondView];
+//    }];
+//    [theBZAnimation methodSetCompletionBlock:^(BOOL theIsAnimationComplited)
+//    {
+//        NSLog(@"completed");
+//    }];
+//
+//    [self.view addSubview:theExampleLabel];
+////    theBZAnimation.theOptions = UIViewAnimationCurveLinear;
+////    [theBZAnimation methodSetAnimationBlock:^{
+////        theExampleLabel.theMinY = 300;
+////        theExampleLabel.theMinX = 300;
+////    }];
+////    [theBZAnimation methodSetCompletionBlock:^(BOOL theIsAnimationComplited)
+////     {
+////         NSLog(@"completed");
+////     }];
+//    
+//    [theBZAnimation methodStart];
+//}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
