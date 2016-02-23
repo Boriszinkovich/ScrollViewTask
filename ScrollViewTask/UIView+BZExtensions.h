@@ -12,13 +12,9 @@
 
 @property (nonatomic, assign) double theMinX;
 @property (nonatomic, assign) double theMinY;
-/// set only after setting theWidth
 @property (nonatomic, assign) double theCenterX;
-/// set only after setting theHeight
 @property (nonatomic, assign) double theCenterY;
-/// set only after setting theWidth
 @property (nonatomic, assign) double theMaxX;
-/// set only after setting theHeight
 @property (nonatomic, assign) double theMaxY;
 @property (nonatomic, assign) double theWidth;
 @property (nonatomic, assign) double theHeight;

@@ -78,7 +78,7 @@
     {
         return;
     }
-    [self adjustViewPagerOrientation];
+    [self methodAdjustPageView];
 }
 
 
@@ -270,7 +270,7 @@
     }
     [self.theViewsArray addObject:thePage];
     [self.theHolderView addSubview:thePage];
-    [self adjustHolderView];
+    [self methodAdjustHolderView];
     if (self.theViewsArray.count == 1)
     {
         thePage.theCenterX = self.theWidth/2;
@@ -342,7 +342,7 @@
 
 #pragma mark - Methods (Private)
 
-- (void)adjustHolderView
+- (void)methodAdjustHolderView
 {
     if (self.theViewsArray.count == 0)
     {
@@ -382,7 +382,7 @@
     }
 }
 
-- (void)adjustViewPagerOrientation
+- (void)methodAdjustPageView
 {
     self.theHolderView.theMinX = 0;
     self.theHolderView.theMinY = 0;

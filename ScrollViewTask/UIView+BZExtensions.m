@@ -64,6 +64,10 @@
 
 - (void)setTheWidth:(double)theWidth
 {
+    if (theWidth < 0)
+    {
+        abort();
+    }
     CGRect theFrameRect = self.frame;
     theFrameRect.size.width = theWidth;
     self.frame = theFrameRect;
@@ -71,6 +75,10 @@
 
 - (void)setTheHeight:(double)theHeight
 {
+    if (theHeight < 0)
+    {
+        abort();
+    }
     CGRect theFrameRect = self.frame;
     theFrameRect.size.height = theHeight;
     self.frame = theFrameRect;

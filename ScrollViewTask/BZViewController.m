@@ -224,8 +224,9 @@
 
 #pragma mark - Delegates (BZPageViewDelegate)
 
-- (void)pageView:(BZPageView * _Nonnull)theBZPageView didScrollToView:(UIView * _Nonnull)theView
-                 atIndex:(NSInteger)theIndex
+- (void)pageView:(BZPageView * _Nonnull)theBZPageView
+ didScrollToView:(UIView * _Nonnull)theView
+         atIndex:(NSInteger)theIndex
 {
     self.theMainSMPageControl.currentPage = theIndex;
 }

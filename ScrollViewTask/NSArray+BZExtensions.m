@@ -36,8 +36,7 @@
             continue;
         }
     }
-    NSArray *resultArray = [NSArray arrayWithArray:theMutableArray];
-    return resultArray;
+    return theMutableArray.copy;
 }
 
 @end

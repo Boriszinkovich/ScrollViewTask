@@ -8,16 +8,16 @@
 
 #import "BZExtensionsManager.h"
 
-@implementation BZExtensionsManager
-
-BOOL isEqual(id _Nullable object1, id _Nullable object2)
+BOOL isEqual(id _Nullable theObject1, id _Nullable theObject2)
 {
-    if (!object1 && !object2)
+    if (!theObject1 && !theObject2)
     {
         return YES;
     }
-    return [object1 isEqual:object2];
+    return [theObject1 isEqual:theObject2];
 }
+
+@implementation BZExtensionsManager
 
 #pragma mark - Class Methods (Public)
 
@@ -46,7 +46,7 @@ BOOL isEqual(id _Nullable object1, id _Nullable object2)
     {
         abort();
     }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),theBlock);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), theBlock);
 }
 
 #pragma mark - Class Methods (Private)

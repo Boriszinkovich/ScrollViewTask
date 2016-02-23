@@ -39,8 +39,9 @@ typedef enum : NSUInteger
 
 @optional
 
-- (void)pageView:(BZPageView * _Nonnull)theBZPageView didScrollToView:(UIView * _Nonnull)theView
-                 atIndex:(NSInteger)theIndex;
+- (void)pageView:(BZPageView * _Nonnull)theBZPageView
+ didScrollToView:(UIView * _Nonnull)theView
+         atIndex:(NSInteger)theIndex;
 
 @end
 

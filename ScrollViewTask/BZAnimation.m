@@ -37,9 +37,9 @@
 
 - (void)methodInitBZAnimation
 {
-    _theDuration = 1.4;
+    _theDuration = 0.7;
     _theDelay = 0;
-    _theSpringWithDamping = 0.2;
+    _theSpringWithDamping = 1;
     _theInitialSpringVelocity = 0;
     _theOptions = UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction;
 }

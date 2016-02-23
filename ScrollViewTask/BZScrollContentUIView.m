@@ -17,9 +17,9 @@ typedef enum : NSUInteger
     BZScrollContentUIViewLayout16 = 16
 } BZScrollContentUIViewLayout;
 
-NSString* const theBrandLabelColorFor16Layout = @"9a9a9a";
-NSString* const theGreyContentColor = @"666666";
-NSString* const theHeaderColor = @"ff7303";
+NSString * const theBrandLabelColorFor16Layout = @"9a9a9a";
+NSString * const theGreyContentColor = @"666666";
+NSString * const theHeaderColor = @"ff7303";
 
 @interface BZScrollContentUIView ()
 
@@ -59,22 +59,22 @@ NSString* const theHeaderColor = @"ff7303";
     
     [self createAllViews];
     
+    NSString *thePath = [[NSBundle mainBundle] pathForResource:theLayoutDictionary[@"BackgroundImage"] ofType:nil];
+    self.theBackgroundImage.image = [UIImage imageWithContentsOfFile:thePath];
+
     NSInteger theLayoutIndex = [((NSString *)theLayoutDictionary[@"Layout"]) integerValue];
     if (theLayoutIndex < 14 || theLayoutIndex > 16)
     {
         abort();
     }
-    self.theBackgroundImage.image = [UIImage imageWithContentsOfFile:
-                                     [[NSBundle mainBundle] pathForResource:_theLayoutDictionary[@"BackgroundImage"]
-                                                                     ofType:nil]];
     switch (theLayoutIndex)
     {
         case BZScrollContentUIViewLayout14:
         {
-            [self setHiddenForImagesAndTitlesOf16Layout:YES];
+            [self methodSetImageViewsAndLabelsForLayout16Hidden:YES];
             if (self.theArrayOfTitleLabels[0].hidden)
             {
-                [self setHiddenForLabelsOf14Layout:NO];
+                [self methodSetLabelsForLayout14Hidden:NO];
             }
             self.theLeftView.hidden = YES;
             self.theContentLabel.hidden = YES;
@@ -120,8 +120,8 @@ NSString* const theHeaderColor = @"ff7303";
         }
         case BZScrollContentUIViewLayout15:
         {
-            [self setHiddenForImagesAndTitlesOf16Layout:YES];
-            [self setHiddenForLabelsOf14Layout:YES];
+            [self methodSetImageViewsAndLabelsForLayout16Hidden:YES];
+            [self methodSetLabelsForLayout14Hidden:YES];
             if (self.theLeftView.hidden)
             {
                 self.theLeftView.hidden = NO;
@@ -135,18 +135,18 @@ NSString* const theHeaderColor = @"ff7303";
             [self.theHeaderLabel sizeToFit];
             self.theHeaderLabel.theWidth = 500;
             
-            [self adjustContentLabel];
+            [self methodAdjustContentLabel];
             self.theContentLabel.textColor = [UIColor whiteColor];
         }
             break;
         case BZScrollContentUIViewLayout16:
         {
-            [self setHiddenForLabelsOf14Layout:YES];
+            [self methodSetLabelsForLayout14Hidden:YES];
             if (self.theLeftView.hidden)
             {
                 self.theLeftView.hidden = NO;
                 self.theContentLabel.hidden = NO;
-                [self setHiddenForImagesAndTitlesOf16Layout:NO];
+                [self methodSetImageViewsAndLabelsForLayout16Hidden:NO];
             }
             
             self.theLeftView.backgroundColor = [[UIColor whiteColor]
@@ -159,7 +159,7 @@ NSString* const theHeaderColor = @"ff7303";
             [self.theHeaderLabel sizeToFit];
             self.theHeaderLabel.theWidth = 500;
             
-            [self adjustContentLabel];
+            [self methodAdjustContentLabel];
             self.theContentLabel.textColor = [UIColor colorWithHexString:
                                               theGreyContentColor];
             
@@ -331,31 +331,32 @@ NSString* const theHeaderColor = @"ff7303";
 
 #pragma mark - Methods (Private)
 
-- (void)setHiddenForImagesAndTitlesOf16Layout:(BOOL)hidden
+- (void)methodSetImageViewsAndLabelsForLayout16Hidden:(BOOL)isHidden
 {
     for (int i = 0; i < 3; i++)
     {
         UIImageView *theCurrentImageView = self.theArrayOfImages[i];
-        theCurrentImageView.hidden = hidden;
+        theCurrentImageView.hidden = isHidden;
         
         UILabel *theCurrentLabel = self.theArrayOfImagesLabels[i];
-        theCurrentLabel.hidden = hidden;
+        theCurrentLabel.hidden = isHidden;
     }
 }
 
-- (void)setHiddenForLabelsOf14Layout:(BOOL)hidden
+- (void)methodSetLabelsForLayout14Hidden:(BOOL)isHidden
 {
     for (int i = 0; i < self.theArrayOfTitleLabels.count; i++)
     {
         UILabel *theTitleLabel = self.theArrayOfTitleLabels[i];
-        theTitleLabel.hidden = hidden;
+        theTitleLabel.hidden = isHidden;
         UILabel *theContentLabel = self.theArrayOfContentLabels[i];
-        theContentLabel.hidden = hidden;
+        theContentLabel.hidden = isHidden;
     }
 }
-- (void)adjustContentLabel
+
+- (void)methodAdjustContentLabel
 {
-    self.theContentLabel.text = _theLayoutDictionary[@"Summary"];
+    self.theContentLabel.text = self.theLayoutDictionary[@"Summary"];
     self.theContentLabel.theMinY = self.theHeaderLabel.theMaxY + 30;
     double theWidth = self.theLeftView.theWidth - self.theContentLabel.theMinX*2;
     self.theContentLabel.theWidth = theWidth;

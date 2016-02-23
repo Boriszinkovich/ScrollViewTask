@@ -66,9 +66,7 @@
             continue;
         }
     }
-    NSDictionary *resultDictionary = [NSDictionary dictionaryWithDictionary:theMutableDictionary];
-    return resultDictionary;
-
+    return theMutableDictionary.copy;
 }
 
 @end

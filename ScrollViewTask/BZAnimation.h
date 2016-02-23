@@ -12,11 +12,11 @@
 
 ///defaults to nil
 @property (nonatomic, strong, nonnull) UIView *theView;
-///defaults to 1.4
+///defaults to 0.7
 @property (nonatomic, assign) double theDuration;
 ///defaults to 0
 @property (nonatomic, assign) double theDelay;
-///defaults to 0.2
+///defaults to 1
 @property (nonatomic, assign) double theSpringWithDamping;
 //defaults to 0
 @property (nonatomic, assign) double theInitialSpringVelocity;

@@ -6,7 +6,6 @@
 //  Copyright © 2016 BZ. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 #import "NSObject+BZExtensions.h"
@@ -19,7 +18,7 @@
 #import "SMPageControl.h"
 #import "BZAnimation.h"
 
-BOOL isEqual(id _Nullable object1 ,id _Nullable object2);
+BOOL isEqual(id _Nullable theObject1, id _Nullable theObject2);
 
 @interface BZExtensionsManager : NSObject
 
