@@ -61,12 +61,12 @@
 {
     [super viewDidAppear:animated];
     
-    UIButton *theButton = [UIButton new];
-    [self.view addSubview:theButton];
-    theButton.frame = self.view.frame;
-    theButton.backgroundColor = [UIColor redColor];
-    theButton.alpha = 0.05;
-    [theButton addTarget:self action:@selector(actionPressed:) forControlEvents:UIControlEventTouchUpInside];
+//    UIButton *theButton = [UIButton new];
+//    [self.view addSubview:theButton];
+//    theButton.frame = self.view.frame;
+//    theButton.backgroundColor = [UIColor redColor];
+//    theButton.alpha = 0.05;
+//    [theButton addTarget:self action:@selector(actionPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)actionPressed:(UIButton *)theButton
@@ -164,7 +164,6 @@
     self.isFirstLoad = NO;
     self.navigationController.navigationBar.hidden = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
-    return;
     NSString *theFilePath = [[NSBundle mainBundle] pathForResource:@"bz_layout_data" ofType:@"json"];
     
     NSString *theJSONString = [[NSString alloc] initWithContentsOfFile:theFilePath

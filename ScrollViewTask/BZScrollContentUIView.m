@@ -28,10 +28,10 @@ NSString * const theHeaderColor = @"ff7303";
 @property (nonatomic, strong, nonnull) UILabel *theHeaderLabel;
 @property (nonatomic, strong, nonnull) UIImageView *theLeftView;
 @property (nonatomic, strong, nonnull) UILabel *theContentLabel;
-@property (nonatomic, strong, nonnull) NSArray<UIImageView *> *theArrayOfImages;
-@property (nonatomic, strong, nonnull) NSArray<UILabel *> *theArrayOfImagesLabels;
-@property (nonatomic, strong, nonnull) NSArray<UILabel *> *theArrayOfTitleLabels;
-@property (nonatomic, strong, nonnull) NSArray<UILabel *> *theArrayOfContentLabels;
+@property (nonatomic, strong, nonnull) NSArray<UIImageView *> *theLayout16ImageViewArray;
+@property (nonatomic, strong, nonnull) NSArray<UILabel *> *theLayout16LabelArray;
+@property (nonatomic, strong, nonnull) NSArray<UILabel *> *theLayout14TitleLabelArray;
+@property (nonatomic, strong, nonnull) NSArray<UILabel *> *theLayout14ContentLabelArray;
 
 @end
 
@@ -72,7 +72,7 @@ NSString * const theHeaderColor = @"ff7303";
         case BZScrollContentUIViewLayout14:
         {
             [self methodSetImageViewsAndLabelsForLayout16Hidden:YES];
-            if (self.theArrayOfTitleLabels[0].hidden)
+            if (self.theLayout14TitleLabelArray[0].hidden)
             {
                 [self methodSetLabelsForLayout14Hidden:NO];
             }
@@ -85,11 +85,11 @@ NSString * const theHeaderColor = @"ff7303";
             self.theHeaderLabel.theWidth = 500;
             [self.theHeaderLabel sizeToFit];
             self.theHeaderLabel.theWidth = 500;
-            for (int i = 0; i < self.theArrayOfTitleLabels.count; i++)
+            for (int i = 0; i < self.theLayout14TitleLabelArray.count; i++)
             {
-                UILabel *theCurrentTitleLabel = self.theArrayOfTitleLabels[i];
+                UILabel *theCurrentTitleLabel = self.theLayout14TitleLabelArray[i];
                 theCurrentTitleLabel.theMinY = self.theHeaderLabel.theMaxY + 30;
-                UILabel *theCurrentContentLabel = self.theArrayOfContentLabels[i];
+                UILabel *theCurrentContentLabel = self.theLayout14ContentLabelArray[i];
                 if (i > 2)
                 {
                     abort();
@@ -115,9 +115,8 @@ NSString * const theHeaderColor = @"ff7303";
                 [theCurrentContentLabel sizeToFit];
                 theCurrentContentLabel.theWidth = 270;
             }
-          
-            break;
         }
+            break;
         case BZScrollContentUIViewLayout15:
         {
             [self methodSetImageViewsAndLabelsForLayout16Hidden:YES];
@@ -160,42 +159,50 @@ NSString * const theHeaderColor = @"ff7303";
             self.theHeaderLabel.theWidth = 500;
             
             [self methodAdjustContentLabel];
-            self.theContentLabel.textColor = [UIColor colorWithHexString:
-                                              theGreyContentColor];
+            self.theContentLabel.textColor = [UIColor colorWithHexString:theGreyContentColor];
             
-            for (int i = 0; i < self.theArrayOfImages.count; i++)
+            for (int i = 0; i < self.theLayout16ImageViewArray.count; i++)
             {
-                UIImageView *theCurrentImageView = self.theArrayOfImages[i];
-                theCurrentImageView.theMinY = self.theContentLabel.theMaxY + 50;
-                
-                UILabel *theCurrentLabel = self.theArrayOfImagesLabels[i];
-                theCurrentLabel.theMinY = theCurrentImageView.theMaxY + 16;
+                NSString *theImagePath;
+                NSString *theText;
                 switch (i)
                 {
                     case 0:
-                        theCurrentImageView.image = [UIImage imageWithContentsOfFile:
-                                                     [[NSBundle mainBundle] pathForResource:
-                                                      theLayoutDictionary[@"Fact1Image"] ofType:nil]];
-                        theCurrentLabel.text = theLayoutDictionary[@"Fact1Text"];
+                    {
+                        theImagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", theLayoutDictionary[@"Fact1Image"]]
+                                                                       ofType:nil];
+                        theText = [NSString stringWithFormat:@"%@", theLayoutDictionary[@"Fact1Text"]];
+                    }
                         break;
                     case 1:
-                        theCurrentImageView.image = [UIImage imageWithContentsOfFile:
-                                                     [[NSBundle mainBundle] pathForResource:
-                                                      theLayoutDictionary[@"Fact2Image"] ofType:nil]];
-                        theCurrentLabel.text = theLayoutDictionary[@"Fact2Text"];
+                    {
+                        theImagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", theLayoutDictionary[@"Fact2Image"]]
+                                                                       ofType:nil];
+                        theText = [NSString stringWithFormat:@"%@", theLayoutDictionary[@"Fact2Text"]];
+                    }
                         break;
                     case 2:
-                        theCurrentImageView.image = [UIImage imageWithContentsOfFile:
-                                                     [[NSBundle mainBundle] pathForResource:
-                                                      theLayoutDictionary[@"Fact3Image"] ofType:nil]];
-                        theCurrentLabel.text = theLayoutDictionary[@"Fact3Text"];
+                    {
+                        theImagePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", theLayoutDictionary[@"Fact3Image"]]
+                                                                       ofType:nil];
+                        theText = [NSString stringWithFormat:@"%@", theLayoutDictionary[@"Fact3Text"]];
+                    }
                         break;
                 }
-                [theCurrentLabel sizeToFit];
+                
+                UIImageView *theCurrentImageView = self.theLayout16ImageViewArray[i];
+                theCurrentImageView.theMinY = self.theContentLabel.theMaxY + 50;
+                theCurrentImageView.image = [UIImage imageWithContentsOfFile:theImagePath];
+                
+                UILabel *theCurrentLabel = self.theLayout16LabelArray[i];
+                theCurrentLabel.theMinY = theCurrentImageView.theMaxY + 16;
                 theCurrentLabel.theWidth = 156;
+                theCurrentLabel.text = theText;
+                [theCurrentLabel sizeToFit];
+                theCurrentLabel.theCenterX = self.theLayout16ImageViewArray[i].theCenterX;
             }
-            break;
         }
+            break;
     }
 }
 
@@ -263,10 +270,10 @@ NSString * const theHeaderColor = @"ff7303";
     
     // create images and titles for 16 layout
     NSMutableArray *theArrayWithImages = [NSMutableArray new];
-    self.theArrayOfImages = theArrayWithImages;
+    self.theLayout16ImageViewArray = theArrayWithImages;
     
-    NSMutableArray *theArrayOfImagesLables = [NSMutableArray array];
-    self.theArrayOfImagesLabels = theArrayOfImagesLables;
+    NSMutableArray *theLayout16ImageViewArrayLables = [NSMutableArray array];
+    self.theLayout16LabelArray = theLayout16ImageViewArrayLables;
     
     NSInteger theBottomContentInsets = 16;
     NSInteger theSizeOfImagesAndLabels = 156;
@@ -281,7 +288,7 @@ NSString * const theHeaderColor = @"ff7303";
         
         UILabel *theCurrentLabel = [UILabel new];
         [self addSubview:theCurrentLabel];
-        [theArrayOfImagesLables addObject:theCurrentLabel];
+        [theLayout16ImageViewArrayLables addObject:theCurrentLabel];
          theCurrentLabel.numberOfLines = 0;
         theCurrentLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:18];
         theCurrentLabel.theMinX = theLeftContentPadding + i * theBottomContentInsets + i * theSizeOfImagesAndLabels;
@@ -292,10 +299,10 @@ NSString * const theHeaderColor = @"ff7303";
     
     // create title labels and content labels for 14 layout
     NSMutableArray *theArrayWithTitleLabels = [NSMutableArray array];
-    self.theArrayOfTitleLabels = theArrayWithTitleLabels;
+    self.theLayout14TitleLabelArray = theArrayWithTitleLabels;
     
     NSMutableArray *theArrayWithContentLabels = [NSMutableArray array];
-    self.theArrayOfContentLabels = theArrayWithContentLabels;
+    self.theLayout14ContentLabelArray = theArrayWithContentLabels;
     
     NSInteger theWidthOfLabels = 270;
     NSInteger theInsetsBeetwenTitles = 50;
@@ -335,21 +342,21 @@ NSString * const theHeaderColor = @"ff7303";
 {
     for (int i = 0; i < 3; i++)
     {
-        UIImageView *theCurrentImageView = self.theArrayOfImages[i];
+        UIImageView *theCurrentImageView = self.theLayout16ImageViewArray[i];
         theCurrentImageView.hidden = isHidden;
         
-        UILabel *theCurrentLabel = self.theArrayOfImagesLabels[i];
+        UILabel *theCurrentLabel = self.theLayout16LabelArray[i];
         theCurrentLabel.hidden = isHidden;
     }
 }
 
 - (void)methodSetLabelsForLayout14Hidden:(BOOL)isHidden
 {
-    for (int i = 0; i < self.theArrayOfTitleLabels.count; i++)
+    for (int i = 0; i < self.theLayout14TitleLabelArray.count; i++)
     {
-        UILabel *theTitleLabel = self.theArrayOfTitleLabels[i];
+        UILabel *theTitleLabel = self.theLayout14TitleLabelArray[i];
         theTitleLabel.hidden = isHidden;
-        UILabel *theContentLabel = self.theArrayOfContentLabels[i];
+        UILabel *theContentLabel = self.theLayout14ContentLabelArray[i];
         theContentLabel.hidden = isHidden;
     }
 }
@@ -361,7 +368,6 @@ NSString * const theHeaderColor = @"ff7303";
     double theWidth = self.theLeftView.theWidth - self.theContentLabel.theMinX*2;
     self.theContentLabel.theWidth = theWidth;
     [self.theContentLabel sizeToFit];
-    self.theContentLabel.theWidth = theWidth;
 }
 
 #pragma mark - Standard Methods
