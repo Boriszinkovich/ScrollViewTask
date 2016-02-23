@@ -38,9 +38,9 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    BZViewController *rootController = [[BZViewController alloc] init];
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:rootController];
-    self.window.rootViewController = navigation;
+    BZViewController *theRootController = [[BZViewController alloc] init];
+    UINavigationController *theNavigationController = [[UINavigationController alloc] initWithRootViewController:theRootController];
+    self.window.rootViewController = theNavigationController;
     
     return YES;
 }

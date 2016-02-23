@@ -14,8 +14,8 @@
 @interface BZViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, BZPageViewDelegate>
 
 @property (nonatomic, strong, nonnull) UIView *theContainerView;
-@property (nonatomic, strong, nonnull) BZPageView *thePageView;
-@property (nonatomic, strong, nonnull) SMPageControl *thePageControl;
+@property (nonatomic, strong, nonnull) BZPageView *theMainBZPageView;
+@property (nonatomic, strong, nonnull) SMPageControl *theMainSMPageControl;
 
 @end
 
@@ -65,6 +65,51 @@
     {
         self.isFirstLoad = NO;
     }
+    BZAnimation *theBZAnimation = [BZAnimation new];
+    theBZAnimation.theDuration = 0.6;
+    UILabel *theExampleLabel = [UILabel new];
+    theExampleLabel.theWidth = 100;
+    theExampleLabel.theHeight = 100;
+    theExampleLabel.theMinX = 100;
+    theExampleLabel.theMinY = 100;
+    theExampleLabel.backgroundColor = [UIColor blueColor];
+    
+    UIView *theContainerView = [UIView new];
+    theContainerView.theMinY = 100;
+    theContainerView.theMinX = 100;
+    theContainerView.theWidth = 700;
+    theContainerView.theHeight = 700;
+    theContainerView.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:theContainerView];
+    [theContainerView addSubview:theExampleLabel];
+    theBZAnimation.theOptions = UIViewAnimationOptionTransitionFlipFromLeft;
+    theBZAnimation.theView = self.view;
+    UIView *theSecondView = [UIView new];
+    theSecondView.theMinX = 400;
+    theSecondView.theMinY = 400;
+    theSecondView.theHeight = 300;
+    theSecondView.theWidth = 300;
+    theSecondView.backgroundColor = [UIColor greenColor];
+    [theBZAnimation methodSetAnimationBlock:^{
+        [theExampleLabel removeFromSuperview];
+        [theContainerView addSubview:theSecondView];
+    }];
+    [theBZAnimation methodSetCompletionBlock:^(BOOL theIsAnimationComplited) {
+        NSLog(@"completed");
+    }];
+
+//    [self.view addSubview:theExampleLabel];
+//    theBZAnimation.theOptions = UIViewAnimationCurveLinear;
+//        [theBZAnimation methodSetAnimationBlock:^{
+//            theExampleLabel.theMinY = 300;
+//            theExampleLabel.theMinX = 300;
+//        }];
+//        [theBZAnimation methodSetCompletionBlock:^(BOOL theIsAnimationComplited) {
+//            NSLog(@"completed");
+//        }];
+    
+    [theBZAnimation methodStart];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -88,6 +133,7 @@
     self.isFirstLoad = NO;
     self.navigationController.navigationBar.hidden = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
+    return;
     NSString *theFilePath = [[NSBundle mainBundle] pathForResource:@"bz_layout_data" ofType:@"json"];
     
     NSString *theJSONString = [[NSString alloc] initWithContentsOfFile:theFilePath
@@ -100,73 +146,62 @@
     theJsonDictionary = [theJsonDictionary theDictionaryWithoutNulls];
     NSArray *theLayoutsDictsArray = [theJsonDictionary objectForKey:@"Slides"];
     
-    BZPageView *thePageView = [BZPageView new];
-    self.thePageView = thePageView;
-    [self.view addSubview:thePageView];
-    thePageView.theWidth = thePageView.superview.theWidth;
-    thePageView.theHeight = thePageView.superview.theHeight;
-    thePageView.theSpringDamping = 0.9;
+    BZPageView *theMainBZPageView = [BZPageView new];
+    self.theMainBZPageView = theMainBZPageView;
+    [self.view addSubview:theMainBZPageView];
+    theMainBZPageView.theWidth = theMainBZPageView.superview.theWidth;
+    theMainBZPageView.theHeight = theMainBZPageView.superview.theHeight;
+    theMainBZPageView.theSpringDamping = 0.9;
     for (int i = 0; i < theLayoutsDictsArray.count; i++)
     {
         BZScrollContentUIView *theBZScrollContentUIView = [BZScrollContentUIView new];
         theBZScrollContentUIView.theLayoutDictionary = theLayoutsDictsArray[i];
-        [thePageView addPage:theBZScrollContentUIView];
+        [theMainBZPageView methodAddPage:theBZScrollContentUIView];
         
     }
-    thePageView.delegate = self;
+    theMainBZPageView.theDelegate = self;
     
-    SMPageControl *theSMPageControl = [SMPageControl new];
-    self.thePageControl = theSMPageControl;
-    [self.view addSubview:theSMPageControl];
-    theSMPageControl.theWidth = theSMPageControl.superview.theWidth;
-    theSMPageControl.theHeight = 40;
-    theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
-    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight;
-    theSMPageControl.numberOfPages = theLayoutsDictsArray.count;
-    theSMPageControl.pageIndicatorImage = [UIImage getImageNamed:@"product_page_off"];
-    theSMPageControl.currentPageIndicatorImage = [UIImage getImageNamed:@"product_page_on"];
-    [theSMPageControl sizeToFit];
-    theSMPageControl.theWidth = theSMPageControl.superview.theHeight;
-    theSMPageControl.theCenterY = theSMPageControl.superview.theHeight/2;
-    theSMPageControl.theCenterX = theSMPageControl.superview.theWidth - theSMPageControl.theHeight/2;
-    
-    CGAffineTransform transform = CGAffineTransformRotate(theSMPageControl.transform, M_PI/2);
-    theSMPageControl.transform = transform;
-    
-    theSMPageControl.currentPage = 0;
-    theSMPageControl.tapBehavior = SMPageControlTapBehaviorStep;
-    [theSMPageControl addTarget:self action:@selector(pageControlValueChanged:)
+    SMPageControl *theMainSMPageControl = [SMPageControl new];
+    self.theMainSMPageControl = theMainSMPageControl;
+    [self.view addSubview:theMainSMPageControl];
+    theMainSMPageControl.numberOfPages = theLayoutsDictsArray.count;
+    theMainSMPageControl.pageIndicatorImage = [UIImage getImageNamed:@"product_page_off"];
+    theMainSMPageControl.currentPageIndicatorImage = [UIImage getImageNamed:@"product_page_on"];
+    [theMainSMPageControl sizeToFit];
+    theMainSMPageControl.theWidth = theMainSMPageControl.superview.theHeight;
+    theMainSMPageControl.theCenterY = theMainSMPageControl.superview.theHeight/2;
+    theMainSMPageControl.theCenterX = theMainSMPageControl.superview.theWidth - theMainSMPageControl.theHeight/2;
+    theMainSMPageControl.transform = CGAffineTransformRotate(theMainSMPageControl.transform, M_PI/2);
+    theMainSMPageControl.currentPage = 0;
+    theMainSMPageControl.tapBehavior = SMPageControlTapBehaviorStep;
+    [theMainSMPageControl addTarget:self action:@selector(actionSMPageControlDidChanged:)
                forControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - Actions
 
+- (void)actionSMPageControlDidChanged:(SMPageControl *)theSMPageControl
+{
+    if (theSMPageControl.currentPage == self.theMainBZPageView.theCurrentPageIndex)
+    {
+        return;
+    }
+    [self.theMainBZPageView methodScrollToViewWithIndex:theSMPageControl.currentPage];
+}
+
 #pragma mark - Gestures
 
-#pragma mark - Delegates ()
+#pragma mark - Delegates (BZPageViewDelegate)
 
-- (void)pageViewScrolledToView:(UIView * _Nonnull)theView withIndex:(NSInteger)theIndex;
+- (void)pageView:(BZPageView * _Nonnull)theBZPageView didScrollToView:(UIView * _Nonnull)theView
+                 atIndex:(NSInteger)theIndex
 {
-    self.thePageControl.currentPage = theIndex;
+    self.theMainSMPageControl.currentPage = theIndex;
 }
 
 #pragma mark - Methods (Public)
 
 #pragma mark - Methods (Private)
-
-- (void) testPerformSelector:(NSNumber *)number
-{
-    NSLog(@"ты вовремя получил этот nslog? %zd", [number integerValue]);
-}
-
-- (void)pageControlValueChanged:(SMPageControl *)sender
-{
-    if (sender.currentPage == self.thePageView.theCurrentPageIndex)
-    {
-        return;
-    }
-    [self.thePageView scrollToViewWithIndex:sender.currentPage];
-}
 
 #pragma mark - Standard Methods
 

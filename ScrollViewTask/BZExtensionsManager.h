@@ -17,6 +17,7 @@
 #import "NSDictionary+BZExtensions.h"
 #import "BZPageView.h"
 #import "SMPageControl.h"
+#import "BZAnimation.h"
 
 BOOL isEqual(id _Nullable object1 ,id _Nullable object2);
 

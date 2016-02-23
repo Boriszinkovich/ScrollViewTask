@@ -51,12 +51,12 @@
     theHolderView.clipsToBounds = YES;
     theHolderView.backgroundColor = [UIColor blueColor];
     
-    _theAnimationDuration = 1.4f;
-    _theSpringDamping = 0.2f;
+    _theAnimationDuration = 1.4;
+    _theSpringDamping = 0.2;
     _theAnimationOptions = UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction;
     
     UIPanGestureRecognizer *thePanGestureRecognizer = [UIPanGestureRecognizer new];
-    [thePanGestureRecognizer addTarget:self action:@selector(panGestureRecognizerWork:)];
+    [thePanGestureRecognizer addTarget:self action:@selector(handleHolderViewPanGestureRecognizer:)];
     thePanGestureRecognizer.maximumNumberOfTouches = 1;
     [self addGestureRecognizer:thePanGestureRecognizer];
 }
@@ -78,51 +78,39 @@
     {
         return;
     }
-    self.theHolderView.theMinX = 0;
-    self.theHolderView.theMinY = 0;
-    NSArray *theSubviews = self.theViewsArray;
-    for (UIView *theView in theSubviews)
-    {
-        [theView removeFromSuperview];
-    }
-    NSArray *theViewsArray = self.theViewsArray.copy;
-    [self.theViewsArray removeAllObjects];
-    for (int i = 0; i < theViewsArray.count; i++)
-    {
-        [self addPage:theViewsArray[i]];
-    }
+    [self adjustViewPagerOrientation];
 }
 
 
-- (void)setTheDuration:(double)theDuration
+- (void)setTheAnimationDuration:(double)theAnimationDuration
 {
-    if (theDuration < 0)
+    if (theAnimationDuration < 0)
     {
         abort();
     }
-    if (theDuration == _theAnimationDuration)
+    if (theAnimationDuration == _theAnimationDuration)
     {
         return;
     }
-    _theAnimationDuration = theDuration;
+    _theAnimationDuration = theAnimationDuration;
 }
 
-- (void)setTheDamping:(double)theDamping
+- (void)setTheSpringDamping:(double)theSpringDamping
 {
-    if (theDamping == _theSpringDamping)
+    if (theSpringDamping == _theSpringDamping)
     {
         return;
     }
-    _theSpringDamping = theDamping;
+    _theSpringDamping = theSpringDamping;
 }
 
-- (void)setTheOptions:(UIViewAnimationOptions)theOptions
+- (void)setTheAnimationOptions:(UIViewAnimationOptions)theAnimationOptions
 {
-    if (theOptions == _theAnimationOptions)
+    if (theAnimationOptions == _theAnimationOptions)
     {
         return;
     }
-    _theAnimationOptions = theOptions;
+    _theAnimationOptions = theAnimationOptions;
 }
 
 #pragma mark - Getters (Public)
@@ -139,7 +127,7 @@
 
 #pragma mark - Gestures
 
-- (void)panGestureRecognizerWork:(UIPanGestureRecognizer *)thePanGestureRecognizer
+- (void)handleHolderViewPanGestureRecognizer:(UIPanGestureRecognizer *)thePanGestureRecognizer
 {
     if (self.theViewsArray.count == 0)
     {
@@ -224,10 +212,10 @@
                  {
                      self.theHolderView.theCenterX += (theHolderViewPoint.x - theView.theCenterX);
                  }
-                 self.theCurrentPageIndex = [self indexForView:theView];
-                 if (self.delegate)
+                 self.theCurrentPageIndex = [self getIndexForView:theView];
+                 if (self.theDelegate)
                  {
-                     [self.delegate pageViewScrolledToView:theView withIndex:self.theCurrentPageIndex];
+                     [self.theDelegate pageView:self didScrollToView:theView atIndex:self.theCurrentPageIndex];
                  }
              }
                  break;
@@ -253,10 +241,10 @@
                  {
                      self.theHolderView.theCenterY += (theHolderViewPoint.y - theView.theCenterY);
                  }
-                 self.theCurrentPageIndex = [self indexForView:theView];
-                 if (self.delegate)
+                 self.theCurrentPageIndex = [self getIndexForView:theView];
+                 if (self.theDelegate)
                  {
-                     [self.delegate pageViewScrolledToView:theView withIndex:self.theCurrentPageIndex];
+                     [self.theDelegate pageView:self didScrollToView:theView atIndex:self.theCurrentPageIndex];
                  }
              }
                  break;
@@ -270,7 +258,7 @@
 
 #pragma mark - Methods (Public)
 
-- (void)addPage:(UIView * _Nonnull)thePage
+- (void)methodAddPage:(UIView * _Nonnull)thePage
 {
     if (!thePage)
     {
@@ -282,7 +270,7 @@
     }
     [self.theViewsArray addObject:thePage];
     [self.theHolderView addSubview:thePage];
-    [self resizeHolderView];
+    [self adjustHolderView];
     if (self.theViewsArray.count == 1)
     {
         thePage.theCenterX = self.theWidth/2;
@@ -309,7 +297,7 @@
     }
 }
 
-- (void)scrollToViewWithIndex:(NSInteger)theIndex
+- (void)methodScrollToViewWithIndex:(NSInteger)theIndex
 {
     if (theIndex < 0 || (self.theViewsArray.count - 1 < theIndex))
     {
@@ -354,7 +342,7 @@
 
 #pragma mark - Methods (Private)
 
-- (void)resizeHolderView
+- (void)adjustHolderView
 {
     if (self.theViewsArray.count == 0)
     {
@@ -394,7 +382,24 @@
     }
 }
 
-- (NSInteger)indexForView:(UIView * _Nonnull)theView
+- (void)adjustViewPagerOrientation
+{
+    self.theHolderView.theMinX = 0;
+    self.theHolderView.theMinY = 0;
+    NSArray *theSubviews = self.theViewsArray;
+    for (UIView *theView in theSubviews)
+    {
+        [theView removeFromSuperview];
+    }
+    NSArray *theViewsArray = self.theViewsArray.copy;
+    [self.theViewsArray removeAllObjects];
+    for (int i = 0; i < theViewsArray.count; i++)
+    {
+        [self methodAddPage:theViewsArray[i]];
+    }
+}
+
+- (NSInteger)getIndexForView:(UIView * _Nonnull)theView
 {
     if (!theView)
     {
