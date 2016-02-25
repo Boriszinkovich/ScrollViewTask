@@ -94,40 +94,48 @@ typedef enum : NSUInteger
 + (void)load
 {
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        Class class = [self class];
-        
-        SEL originalSelector;
-        SEL swizzledSelector;
-        Method originalMethod;
-        Method swizzledMethod;
-        BOOL didAddMethod;
-        for (int i = 0; i < 1; i++)
-        {
-            if (i == 0)
-            {
-                originalSelector = @selector(setFrame:);
-                swizzledSelector = @selector(swizzledBZ_setFrame:);
-                originalMethod = class_getInstanceMethod(class, originalSelector);
-                swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-                didAddMethod =  class_addMethod(class,
-                                                originalSelector,
-                                                method_getImplementation(swizzledMethod),
-                                                method_getTypeEncoding(swizzledMethod));
-                if (didAddMethod)
-                {
-                    class_replaceMethod(class,
-                                        swizzledSelector,
-                                        method_getImplementation(originalMethod),
-                                        method_getTypeEncoding(originalMethod));
-                }
-                else
-                {
-                    method_exchangeImplementations(originalMethod, swizzledMethod);
-                }
-            }
-        }
-    });
+    dispatch_once(&onceToken, ^
+                  {
+                      Class class = [self class];
+                      
+                      SEL originalSelector = nil;
+                      SEL swizzledSelector = nil;
+                      Method originalMethod = nil;
+                      Method swizzledMethod = nil;
+                      //        BOOL didAddMethod;
+                      for (int i = 0; i < 1; i++)
+                      {
+                          if (i == 0)
+                          {
+                              originalSelector = @selector(setFrame:);
+                              swizzledSelector = @selector(swizzledBZ_setFrame:);
+                              originalMethod = class_getInstanceMethod(class, originalSelector);
+                              swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+                              
+                          }
+                          
+                          if (!originalMethod || !swizzledMethod || !originalSelector || !swizzledSelector)
+                          {
+                              abort();
+                          }
+                          
+                          BOOL didAddMethod =  class_addMethod(class,
+                                                               originalSelector,
+                                                               method_getImplementation(swizzledMethod),
+                                                               method_getTypeEncoding(swizzledMethod));
+                          if (didAddMethod)
+                          {
+                              class_replaceMethod(class,
+                                                  swizzledSelector,
+                                                  method_getImplementation(originalMethod),
+                                                  method_getTypeEncoding(originalMethod));
+                          }
+                          else
+                          {
+                              method_exchangeImplementations(originalMethod, swizzledMethod);
+                          }
+                      }
+                  });
 }
 
 #pragma mark - Init & Dealloc
