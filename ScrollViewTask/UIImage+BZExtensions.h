@@ -11,7 +11,7 @@
 @interface UIImage (BZExtensions)
 
 + (UIImage * _Nullable)getImageNamed:(NSString * _Nonnull)theImageName;
-+ (UIImage * _Nonnull)getImageWithImage:(UIImage * _Nonnull)theOriginalImage scaledToSize:(CGSize)theSize;
+- (UIImage * _Nonnull)getImageScaledToSize:(CGSize)theSize;
 
 @end
 

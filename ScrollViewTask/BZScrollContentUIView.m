@@ -62,7 +62,7 @@ NSString * const theHeaderColor = @"ff7303";
     NSString *thePath = [[NSBundle mainBundle] pathForResource:theLayoutDictionary[@"BackgroundImage"] ofType:nil];
     self.theBackgroundImage.image = [UIImage imageWithContentsOfFile:thePath];
 
-    NSInteger theLayoutIndex = [((NSString *)theLayoutDictionary[@"Layout"]) integerValue];
+    NSInteger theLayoutIndex =[[NSString stringWithFormat:@"%@",theLayoutDictionary[@"Layout"]] integerValue];
     if (theLayoutIndex < 14 || theLayoutIndex > 16)
     {
         abort();
@@ -152,7 +152,7 @@ NSString * const theHeaderColor = @"ff7303";
                                                 colorWithAlphaComponent:0.85];
             self.theBrandLabel.textColor = [UIColor colorWithHexString:theBrandLabelColorFor16Layout];
             
-            NSString *theHeaderText = _theLayoutDictionary[@"Header"];
+            NSString *theHeaderText = theLayoutDictionary[@"Header"];
             self.theHeaderLabel.text = theHeaderText;
             self.theHeaderLabel.theWidth = 500;
             [self.theHeaderLabel sizeToFit];

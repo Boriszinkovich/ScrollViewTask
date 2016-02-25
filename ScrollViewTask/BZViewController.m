@@ -60,32 +60,79 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+//    UIView *theContainerView = [UIView new];
+//    [self.view addSubview:theContainerView];
+//    
+//    theContainerView.theWidth = 400;
+//    theContainerView.theHeight = 400;
+//    theContainerView.theMinX = 50;
+//    theContainerView.theMinY = 100;
+//    theContainerView.backgroundColor = [UIColor greenColor];
+//    
+//    
+//    UIView *theTopSeparatorView = theContainerView.theTopSeparatorView;
+//    theTopSeparatorView.backgroundColor = [UIColor yellowColor];
+//    theTopSeparatorView.theHeight = 20;
+//    
+//    UIView *theLeftSeparatorView = theContainerView.theLeftSeparatorView;
+//    theLeftSeparatorView.backgroundColor = [UIColor blackColor];
+//    theLeftSeparatorView.theWidth = 20;
+////    theLeftSeparatorView.theHeight = 40;
+//    
+//    UIView *theBottomSeparatorView = theContainerView.theBottomSeparatorView;
+//    theBottomSeparatorView.backgroundColor = [UIColor redColor];
+//    theBottomSeparatorView.theHeight = 70;
+//    theBottomSeparatorView.theWidth = 300;
+//    {
+//        UIView *theBottomSeparatorLeftSubview = theBottomSeparatorView.theLeftSeparatorView;
+////        theBottomSeparatorLeftSubview.theHeight = 20;
+////        theBottomSeparatorLeftSubview.theWidth = 20;
+//        theBottomSeparatorLeftSubview.backgroundColor = [UIColor blueColor];
+//    }
+//    
+//    UIView *theRightSeparatorView = theContainerView.theRightSeparatorView;
+//    theRightSeparatorView.backgroundColor = [UIColor purpleColor];
+//    theRightSeparatorView.theWidth = 50;
+//    theRightSeparatorView.theHeight = 100;
+//    
+//////    [BZExtensionsManager methodDispatchAfterSeconds:3 withBlock:^
+//////     {
+//////         theBottomSeparatorView.theMinY = 200;
+//////     }];
+////    
+////    [BZExtensionsManager methodDispatchAfterSeconds:6 withBlock:^
+////     {
+//////         theContainerView.theWidth = 200;
+////         theContainerView.theHeight = 500;
+//////         theBottomSeparatorView.theHeight = 100;
+////     }];
+//    
+//    
+//    [BZExtensionsManager methodDispatchAfterSeconds:3 withBlock:^
+//     {
+//         [UIView animateWithDuration:5
+//                          animations:^
+//          {
+//              theBottomSeparatorView.theMinX = 0;
+////              theContainerView.theWidth = 800;
+//          }];
+//         
+//     }];
+//    [BZExtensionsManager methodDispatchAfterSeconds:12 withBlock:^
+//     {
+////         [theBottomSeparatorView removeFromSuperview];
+//         [UIView animateWithDuration:5
+//                          animations:^
+//          {
+//              theContainerView.theWidth = 800;
+////              theBottomSeparatorView.theHeight = 100;
+////              theBottomSeparatorView.theWidth = 20;
+//          }];
+//         
+//     }];
     
-//    UIButton *theButton = [UIButton new];
-//    [self.view addSubview:theButton];
-//    theButton.frame = self.view.frame;
-//    theButton.backgroundColor = [UIColor redColor];
-//    theButton.alpha = 0.05;
-//    [theButton addTarget:self action:@selector(actionPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)actionPressed:(UIButton *)theButton
-{
-    theButton.alpha = 0.6;
-    BZAnimation *theFinishedBZAnimation = [BZAnimation new];
-    theFinishedBZAnimation.theOptions = UIViewAnimationOptionBeginFromCurrentState;
-    theFinishedBZAnimation.theDuration = 8;
-    theFinishedBZAnimation.theSpringWithDamping = 1;
-    [theFinishedBZAnimation methodSetAnimationBlock:^
-     {
-         theButton.alpha = 1;
-     }];
-    [theFinishedBZAnimation methodSetCompletionBlock:^(BOOL finished)
-     {
-         NSLog(@"%d",finished);
-     }];
-    [theFinishedBZAnimation methodStart];
-}
 
 //- (void)viewDidAppear:(BOOL)animated
 //{
@@ -164,6 +211,24 @@
     self.isFirstLoad = NO;
     self.navigationController.navigationBar.hidden = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+
+//    UIView *theContainerView = [UIView new];
+//    [self.view addSubview:theContainerView];
+//    
+//    theContainerView.theWidth = 400;
+//    theContainerView.theHeight = 400;
+//    theContainerView.theMinX = 50;
+//    theContainerView.theMinY = 100;
+//    theContainerView.backgroundColor = [UIColor greenColor];
+//    
+//    BZAnimation *theAnimation = [BZAnimation new];
+//    theAnimation.theDuration = 4;
+//    [theAnimation methodSetAnimationBlock:^
+//     {
+//         theContainerView.theMinY = 80;
+//     }];
+    
     NSString *theFilePath = [[NSBundle mainBundle] pathForResource:@"bz_layout_data" ofType:@"json"];
     
     NSString *theJSONString = [[NSString alloc] initWithContentsOfFile:theFilePath
@@ -182,19 +247,48 @@
     theMainBZPageView.theWidth = theMainBZPageView.superview.theWidth;
     theMainBZPageView.theHeight = theMainBZPageView.superview.theHeight;
     theMainBZPageView.theSpringDamping = 0.9;
-    for (int i = 0; i < theLayoutsDictsArray.count; i++)
-    {
-        BZScrollContentUIView *theBZScrollContentUIView = [BZScrollContentUIView new];
-        theBZScrollContentUIView.theLayoutDictionary = theLayoutsDictsArray[i];
-        [theMainBZPageView methodAddPage:theBZScrollContentUIView];
-        
-    }
+    theMainBZPageView.theViewPagingOrientation = BZPageViewOrientationVertical;
+    theMainBZPageView.isInfinite = NO;
+    
+    
+    
+    UIView *theRedView = [UIView new];
+    theRedView.theWidth = self.view.theWidth;
+    theRedView.theHeight = self.view.theHeight;
+    theRedView.backgroundColor = [UIColor redColor];
+    theRedView.tag = 3;
+    [theMainBZPageView methodAddPage:theRedView];
+    
+    
+    UIView *theGreenView = [UIView new];
+    theGreenView.theWidth = self.view.theWidth;
+    theGreenView.theHeight = self.view.theHeight;
+    theGreenView.backgroundColor = [UIColor greenColor];
+    theGreenView.tag = 6;
+    [theMainBZPageView methodAddPage:theGreenView];
+
+    
+    UIView *theBlueView = [UIView new];
+    theBlueView.theWidth = self.view.theWidth;
+    theBlueView.theHeight = self.view.theHeight;
+    theBlueView.backgroundColor = [UIColor blueColor];
+    theBlueView.tag = 9;
+    [theMainBZPageView methodAddPage:theBlueView];
+
+//    for (int i = 0; i < theLayoutsDictsArray.count; i++)
+//    {
+//        BZScrollContentUIView *theBZScrollContentUIView = [BZScrollContentUIView new];
+//        theBZScrollContentUIView.theLayoutDictionary = theLayoutsDictsArray[i];
+//        [theMainBZPageView methodAddPage:theBZScrollContentUIView];
+//        
+//    }
     theMainBZPageView.theDelegate = self;
     
     SMPageControl *theMainSMPageControl = [SMPageControl new];
     self.theMainSMPageControl = theMainSMPageControl;
     [self.view addSubview:theMainSMPageControl];
-    theMainSMPageControl.numberOfPages = theLayoutsDictsArray.count;
+//    theMainSMPageControl.numberOfPages = theLayoutsDictsArray.count;
+    theMainSMPageControl.numberOfPages = theMainBZPageView.subviews[0].subviews.count;
     theMainSMPageControl.pageIndicatorImage = [UIImage getImageNamed:@"product_page_off"];
     theMainSMPageControl.currentPageIndicatorImage = [UIImage getImageNamed:@"product_page_on"];
     [theMainSMPageControl sizeToFit];
@@ -204,16 +298,35 @@
     theMainSMPageControl.transform = CGAffineTransformRotate(theMainSMPageControl.transform, M_PI/2);
     theMainSMPageControl.currentPage = 0;
     theMainSMPageControl.tapBehavior = SMPageControlTapBehaviorStep;
-    [theMainSMPageControl addTarget:self action:@selector(actionSMPageControlDidChanged:)
+    [theMainSMPageControl addTarget:self action:@selector(actionSMPageControlDidChange:)
                forControlEvents:UIControlEventValueChanged];
+    
+    
+    [BZExtensionsManager methodDispatchAfterSeconds:5
+                                          withBlock:^
+     {
+         theMainBZPageView.isInfinite = YES;
+     }];
 }
 
 #pragma mark - Actions
 
-- (void)actionSMPageControlDidChanged:(SMPageControl *)theSMPageControl
+- (void)actionSMPageControlDidChange:(SMPageControl *)theSMPageControl
 {
-    if (theSMPageControl.currentPage == self.theMainBZPageView.theCurrentPageIndex)
+    NSLog(@"%ld",(long)theSMPageControl.currentPage);
+    if (theSMPageControl.tapBehavior == SMPageControlTapBehaviorStep)
     {
+        NSInteger theLastIndex  = self.theMainBZPageView.theCountOfPages - 1;
+        if (theSMPageControl.currentPage < self.theMainBZPageView.theCurrentPageIndex ||
+            (!theSMPageControl.currentPage && self.theMainBZPageView.theCurrentPageIndex == 0))
+        {
+            [self.theMainBZPageView methodScrollToPreviousPage];
+        }
+        else if (theSMPageControl.currentPage > self.theMainBZPageView.theCurrentPageIndex ||
+                 (theSMPageControl.currentPage ==  theLastIndex && self.theMainBZPageView.theCurrentPageIndex == theLastIndex))
+        {
+            [self.theMainBZPageView methodScrollToNextPage];
+        }
         return;
     }
     [self.theMainBZPageView methodScrollToViewWithIndex:theSMPageControl.currentPage];

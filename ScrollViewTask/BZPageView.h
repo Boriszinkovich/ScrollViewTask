@@ -27,11 +27,17 @@ typedef enum : NSUInteger
 @property (nonatomic, assign) double theSpringDamping;
 /// default UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction
 @property (nonatomic, assign) UIViewAnimationOptions theAnimationOptions;
-@property (nonatomic, assign, readonly) double theCurrentPageIndex;
+/// default to NO
+@property (nonatomic, assign) BOOL isInfinite;
+@property (nonatomic, assign, readonly) NSInteger theCurrentPageIndex;
+@property (nonatomic, assign, readonly) NSInteger theCountOfPages;
 
 /// add only afterSetting theWidth and theHeight
 - (void)methodAddPage:(UIView * _Nonnull)thePage;
+/// works correctly only when isInfinitive set to NO
 - (void)methodScrollToViewWithIndex:(NSInteger)theIndex;
+- (void)methodScrollToNextPage;
+- (void)methodScrollToPreviousPage;
 
 @end
 

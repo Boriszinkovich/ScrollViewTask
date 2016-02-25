@@ -28,20 +28,17 @@
     return theImage;
 }
 
-+ (UIImage * _Nonnull)getImageWithImage:(UIImage * _Nonnull)theOriginalImage scaledToSize:(CGSize)theSize
+- (UIImage * _Nonnull)getImageScaledToSize:(CGSize)theSize;
 {
-    if (!theOriginalImage)
+    if (CGSizeEqualToSize(self.size, theSize))
     {
-        abort();
-    }
-    if (CGSizeEqualToSize(theOriginalImage.size, theSize))
-    {
-        return theOriginalImage;
+        return self;
     }
     
+    UIImage *theNewImage = self.copy;
     UIGraphicsBeginImageContextWithOptions(theSize, NO, 0.0f);
     
-    [theOriginalImage drawInRect:CGRectMake(0.0f, 0.0f, theSize.width, theSize.height)];
+    [theNewImage drawInRect:CGRectMake(0.0f, 0.0f, theSize.width, theSize.height)];
     
     UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

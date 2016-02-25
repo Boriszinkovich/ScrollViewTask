@@ -19,6 +19,13 @@
 @property (nonatomic, assign) double theWidth;
 @property (nonatomic, assign) double theHeight;
 
+@property (nonatomic, strong, nonnull, readonly) UIView *theRightSeparatorView;
+@property (nonatomic, strong, nonnull, readonly) UIView *theLeftSeparatorView;
+@property (nonatomic, strong, nonnull, readonly) UIView *theTopSeparatorView;
+@property (nonatomic, strong, nonnull, readonly) UIView *theBottomSeparatorView;
+
+- (NSArray * _Nonnull)getTheSeparatorsArray;
+
 @end
 
 
