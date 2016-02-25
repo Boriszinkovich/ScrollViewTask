@@ -21,9 +21,9 @@ typedef enum : NSUInteger
 
 @property (nonatomic, weak, nullable) id<BZPageViewDelegate> theDelegate;
 @property (nonatomic, assign) BZPageViewOrientation theViewPagingOrientation;
-/// default is 1.4
+/// default is 0.7
 @property (nonatomic, assign) double theAnimationDuration;
-/// defaults to 0.2
+/// defaults to 1
 @property (nonatomic, assign) double theSpringDamping;
 /// default UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction
 @property (nonatomic, assign) UIViewAnimationOptions theAnimationOptions;

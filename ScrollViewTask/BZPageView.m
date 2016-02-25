@@ -59,10 +59,10 @@ typedef enum : NSUInteger
     _theHolderView = theHolderView;
     [self addSubview:theHolderView];
     theHolderView.clipsToBounds = YES;
-    theHolderView.backgroundColor = [UIColor blueColor];
+    theHolderView.opaque = 0;
     
-    _theAnimationDuration = 1.4;
-    _theSpringDamping = 0.2;
+    _theAnimationDuration = 0.7;
+    _theSpringDamping = 1;
     _theAnimationOptions = UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction;
     _isInfinite = NO;
     _theCountOfPages = 0;
@@ -348,8 +348,8 @@ typedef enum : NSUInteger
     {
         return;
     }
-    [self.theViewsArray addObject:thePage];
     [self.theHolderView addSubview:thePage];
+    [self.theViewsArray addObject:thePage];
     [self methodAdjustHolderView];
     if (self.theViewsArray.count == 1)
     {
@@ -531,6 +531,10 @@ typedef enum : NSUInteger
             {
                 self.theHolderView.theWidth = theWidth;
             }
+            else
+            {
+                self.theHolderView.theWidth = self.theWidth;
+            }
         }
             break;
             
@@ -546,6 +550,11 @@ typedef enum : NSUInteger
             {
                 self.theHolderView.theHeight = theHeight;
             }
+            else
+            {
+                self.theHolderView.theHeight = self.theHeight;
+            }
+            NSLog(@"%f %f",self.theHolderView.theWidth,self.theHolderView.theHeight);
         }
             break;
     }
